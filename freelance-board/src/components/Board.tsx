@@ -1,4 +1,9 @@
-export default function Board() {
+import { supabase } from "@/db/supabase.client"
+
+export default async function Board() {
+  const { data, error } = await supabase.from("projects").select("*").limit(5)
+  console.log("sample data", { data, error })
+
   return (
     <>
       <div className="flex h-screen w-screen items-center justify-center">
