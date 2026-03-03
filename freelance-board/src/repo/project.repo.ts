@@ -27,25 +27,41 @@ export type CreateProjectInput = {
   client?: string
   budget?: number
   deadline?: Date
-  status: ProjectStatus
-  priority: ProjectPriority
+  status?: ProjectStatus
+  priority?: ProjectPriority
 }
 
-export async function CreateProject(
-  _input: CreateProjectInput,
+/**
+ * Temporary implementation that creates a new project and adds it to the in-memory array. In a real implementation, this would insert into the database.
+ */
+export async function createProject(
+  input: CreateProjectInput,
 ): Promise<Project> {
-  throw new Error("Not implemented")
+  const newProject: Project = {
+    id: crypto.randomUUID(),
+    title: input.title,
+    client: input.client,
+    budget: input.budget,
+    deadline: input.deadline,
+    status: input.status ?? "inquiry",
+    priority: input.priority ?? "medium",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
+
+  mockProjects.push(newProject)
+  return newProject
 }
 
 export type UpdateProjectInput = Partial<CreateProjectInput>
 
-export async function UpdateProject(
+export async function updateProject(
   _id: string,
   _input: UpdateProjectInput,
 ): Promise<Project> {
   throw new Error("Not implemented")
 }
 
-export async function DeleteProject(_id: string): Promise<void> {
+export async function deleteProject(_id: string): Promise<void> {
   throw new Error("Not implemented")
 }
