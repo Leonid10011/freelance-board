@@ -2,7 +2,14 @@
 /**
  * Repository functions for accessing and manipulating project data in the database.
  */
+import {
+  projectDomainToRowInput,
+  projectRowToDomain,
+} from "@/db/project.mapper"
+import { createSupabaseBrowserClient } from "@/db/supabase.client"
 import { Project, ProjectPriority, ProjectStatus } from "@/domain/project"
+
+const supabase = createSupabaseBrowserClient()
 
 const mockProjects: Project[] = [
   {
@@ -34,23 +41,37 @@ export type CreateProjectInput = {
 /**
  * Temporary implementation that creates a new project and adds it to the in-memory array. In a real implementation, this would insert into the database.
  */
-export async function createProject(
-  input: CreateProjectInput,
-): Promise<Project> {
-  const newProject: Project = {
-    id: crypto.randomUUID(),
-    title: input.title,
-    client: input.client,
-    budget: input.budget,
-    deadline: input.deadline,
-    status: input.status ?? "inquiry",
-    priority: input.priority ?? "medium",
-    createdAt: new Date(),
-    updatedAt: new Date(),
+export async function createProject(input: Project): Promise<Project> {
+  const supabase = createSupabaseBrowserClient()
+
+  const { data: authData, error: authError } = await supabase.auth.getSession()
+  if (authError || !authData.session) {
+    console.error("Error getting auth session:", authError)
+    throw new Error(authError?.message || "Failed to get auth session")
   }
 
-  mockProjects.push(newProject)
-  return newProject
+  const { data, error } = await supabase
+    .from("projects")
+    .insert({
+      title: input.title,
+      client: input.client ?? null,
+      budget: input.budget ?? null,
+      deadline: input.deadline
+        ? input.deadline.toISOString().slice(0, 10)
+        : null,
+      status: input.status || "inquiry",
+      priority: input.priority || "medium",
+      is_demo: true, // Mark this project as a demo project
+    })
+    .select()
+    .single()
+
+  if (error) {
+    console.error("Error inserting project:", error)
+    throw new Error(error.message)
+  }
+
+  return projectRowToDomain(data)
 }
 
 export type UpdateProjectInput = Partial<CreateProjectInput>

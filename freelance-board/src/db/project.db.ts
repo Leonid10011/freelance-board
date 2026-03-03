@@ -14,4 +14,5 @@ export interface ProjectRow {
   priority: ProjectPriority
   createdAt: string // Store as ISO string
   updatedAt: string // Store as ISO string
+  is_demo?: boolean // Optional field to indicate if this is a demo project
 }

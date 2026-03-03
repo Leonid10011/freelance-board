@@ -1,6 +1,8 @@
-import { supabase } from "@/db/supabase.client"
+import { createSupabaseBrowserClient } from "@/db/supabase.client"
 
 export default async function Board() {
+  const supabase = createSupabaseBrowserClient()
+
   const { data, error } = await supabase.from("projects").select("*").limit(5)
   console.log("sample data", { data, error })
 
