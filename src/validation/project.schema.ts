@@ -29,16 +29,22 @@ const DateSchema = z
     message: "Invalid date",
   })
 
-export const CreateProjectSchema = z.object({
-  title: z.string().min(1, "Title is required").max(120),
+
+ export const BaseProjectSchema = z.object({
+  title: z.string().min(1).max(120),
   client: z.string().trim().min(1).max(120).optional(),
   budget: MoneySchema.optional(),
   deadline: DateSchema.optional(),
+  status: ProjectStatusSchema,
+  priority: ProjectPrioritySchema,
+})
+
+export const CreateProjectSchema = BaseProjectSchema.extend({
   status: ProjectStatusSchema.default("inquiry"),
   priority: ProjectPrioritySchema.default("medium"),
 })
 
-export const UpdateProjectSchema = CreateProjectSchema.partial().refine(
+export const UpdateProjectSchema = BaseProjectSchema.partial().refine(
   (obj) => Object.keys(obj).length > 0,
   { message: "No fields to update" },
 )
