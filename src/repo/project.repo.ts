@@ -3,6 +3,7 @@
  * Repository functions for accessing and manipulating project data in the database.
  */
 import { projectRowToDomain } from "@/db/project.mapper"
+import { toProjectUpdatePatch } from "@/db/project.repo"
 import { createSupabaseBrowserClient } from "@/db/supabase.client"
 import { Project, ProjectPriority, ProjectStatus } from "@/domain/project"
 
@@ -26,6 +27,16 @@ export async function listProjects(): Promise<Project[]> {
   return mockProjects
 }
 
+export async function getProjects(): Promise<Project[]> {
+  const { data, error } = await supabase.from("projects").select("*").limit(5)
+  if (error) {
+    console.error("Error fetching projects:", error)
+    throw new Error(error.message)
+  } else {
+    return data.map(projectRowToDomain)
+  }
+}
+
 export type CreateProjectInput = {
   title: string
   client?: string
@@ -39,8 +50,6 @@ export type CreateProjectInput = {
  * Temporary implementation that creates a new project and adds it to the in-memory array. In a real implementation, this would insert into the database.
  */
 export async function createProject(input: Project): Promise<Project> {
-  const supabase = createSupabaseBrowserClient()
-
   const { data: authData, error: authError } = await supabase.auth.getSession()
   if (authError || !authData.session) {
     console.error("Error getting auth session:", authError)
@@ -77,9 +86,35 @@ export async function updateProject(
   _id: string,
   _input: UpdateProjectInput,
 ): Promise<Project> {
-  throw new Error("Not implemented")
+  
+  const { data: authData, error: authError } = await supabase.auth.getSession();
+  if (authError || !authData.session) {
+    console.error("Error getting auth session:", authError);
+    throw new Error(authError?.message || "Failed to get auth session");
+  } else {
+
+    const patch = toProjectUpdatePatch(_input);
+    console.log("Generated patch for update:", patch);
+   const { data, error } = await supabase.from("projects")
+    .update(patch)
+    .eq("id", _id)
+    .select()
+    .single()
+
+    return projectRowToDomain(data);
+  } 
 }
 
 export async function deleteProject(_id: string): Promise<void> {
-  throw new Error("Not implemented")
+  const { data: authData, error: authError } = await supabase.auth.getSession()
+  if (authError || !authData.session) {
+    console.error("Error getting auth session:", authError)
+    throw new Error(authError?.message || "Failed to get auth session")
+  } else {
+    const { error } = await supabase.from("projects").delete().eq("id", _id)
+    if (error) {
+      console.error("Error deleting project:", error)
+      throw new Error(error.message)
+    }   
+  }
 }
