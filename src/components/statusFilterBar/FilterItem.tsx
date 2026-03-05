@@ -1,15 +1,28 @@
+import { ProjectStatus } from "@/domain/project"
+import { useBoardPreferences } from "../board/useBoardPreferences"
+
 type FilterItemProps = {
-    label: string;
-    isActive: boolean;
-    onClick: () => void;
-}   
+  label: string
+  isActive: boolean
+  toggleStatus: (status: ProjectStatus) => void
+}
 
-export default function FilterItem({ label, isActive, onClick }: FilterItemProps) {
+export default function FilterItem({
+  label,
+  isActive,
+  toggleStatus,
+}: FilterItemProps) {
+  const handleClick = () => {
+    console.log("Toggling status:", label)
+    toggleStatus(label as ProjectStatus)
+  }
 
-
-    return (
-            <div className={`cursor-pointer px-16 py-8 rounded-full ${isActive ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`} onClick={onClick}>
-                {label}
-            </div>
-    );
+  return (
+    <div
+      className={`cursor-pointer ${isActive ? "border-green-500 border-b-2 pb-1" : "text-gray-500"}`}
+      onClick={handleClick}
+    >
+      {label}
+    </div>
+  )
 }

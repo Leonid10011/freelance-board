@@ -2,13 +2,13 @@
 /**
  * Domain models and types for the freelance board application.
  */
-export type ProjectStatus =
-  | "waiting"
-  | "completed"
-  | "proposal"
-  | "inquiry"
-  | "active"
-  | "negotiation"
+const statuses = ["waiting", "completed", "proposal", "inquiry", "active", "negotiation"] as const;
+
+// Der Typ wird automatisch: "waiting" | "completed" | ...
+export type ProjectStatus = typeof statuses[number];
+
+// Die Anzahl ist zur Laufzeit und statisch verfügbar
+export const projectStatusCount = statuses.length; // 6
 
 export type ProjectPriority = "low" | "medium" | "high"
 

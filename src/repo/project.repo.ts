@@ -6,7 +6,10 @@ import { projectRowToDomain } from "@/db/project.mapper"
 import { toProjectUpdatePatch } from "@/db/project.repo"
 import { createSupabaseBrowserClient } from "@/db/supabase.client"
 import { Project, ProjectPriority, ProjectStatus } from "@/domain/project"
-import { CreateProjectValidated, UpdateProjectValidated } from "@/validation/project.schema"
+import {
+  CreateProjectValidated,
+  UpdateProjectValidated,
+} from "@/validation/project.schema"
 
 const supabase = createSupabaseBrowserClient()
 
@@ -50,7 +53,9 @@ export type CreateProjectInput = {
 /**
  * Temporary implementation that creates a new project and adds it to the in-memory array. In a real implementation, this would insert into the database.
  */
-export async function createProject(input: CreateProjectValidated): Promise<Project> {
+export async function createProject(
+  input: CreateProjectValidated,
+): Promise<Project> {
   const { data: authData, error: authError } = await supabase.auth.getSession()
   if (authError || !authData.session) {
     console.error("Error getting auth session:", authError)
@@ -87,23 +92,22 @@ export async function updateProject(
   _id: string,
   _input: UpdateProjectValidated,
 ): Promise<Project> {
-  
-  const { data: authData, error: authError } = await supabase.auth.getSession();
+  const { data: authData, error: authError } = await supabase.auth.getSession()
   if (authError || !authData.session) {
-    console.error("Error getting auth session:", authError);
-    throw new Error(authError?.message || "Failed to get auth session");
+    console.error("Error getting auth session:", authError)
+    throw new Error(authError?.message || "Failed to get auth session")
   } else {
+    const patch = toProjectUpdatePatch(_input)
+    console.log("Generated patch for update:", patch)
+    const { data, error } = await supabase
+      .from("projects")
+      .update(patch)
+      .eq("id", _id)
+      .select()
+      .single()
 
-    const patch = toProjectUpdatePatch(_input);
-    console.log("Generated patch for update:", patch);
-   const { data, error } = await supabase.from("projects")
-    .update(patch)
-    .eq("id", _id)
-    .select()
-    .single()
-
-    return projectRowToDomain(data);
-  } 
+    return projectRowToDomain(data)
+  }
 }
 
 export async function deleteProject(_id: string): Promise<void> {
@@ -116,6 +120,6 @@ export async function deleteProject(_id: string): Promise<void> {
     if (error) {
       console.error("Error deleting project:", error)
       throw new Error(error.message)
-    }   
+    }
   }
 }

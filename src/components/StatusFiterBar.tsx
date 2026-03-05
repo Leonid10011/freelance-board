@@ -1,11 +1,25 @@
-import FilterItem from "./statusFilterBar/FilterItem";
+import { ProjectStatus } from "@/domain/project"
+import FilterItem from "./statusFilterBar/FilterItem"
 
-export default function StatusFilterBar() {
+export default function StatusFilterBar({
+  statuses,
+  visibleStatuses,
+  toggleStatus,
+}: {
+  statuses: ProjectStatus[]
+  visibleStatuses: ProjectStatus[]
+  toggleStatus: (status: ProjectStatus) => void
+}) {
   return (
-    <div className="flex gap-32 py-32 px-24">
-      <FilterItem label="All" isActive={true} onClick={() => console.log("All clicked")} />
-      <FilterItem label="Active" isActive={false} onClick={() => console.log("Active clicked")} />
-      <FilterItem label="Completed" isActive={false} onClick={() => console.log("Completed clicked")} />
+    <div className="flex gap-8 py-6 px-8">
+      {statuses.map((status) => (
+        <FilterItem
+          key={status}
+          label={status}
+          isActive={visibleStatuses.includes(status)}
+          toggleStatus={toggleStatus}
+        />
+      ))}
     </div>
   )
 }

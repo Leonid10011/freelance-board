@@ -1,19 +1,43 @@
 "use client"
 
-import { createSupabaseBrowserClient } from "@/db/supabase.client"
+import { ProjectStatus } from "@/domain/project"
+import { useBoardPreferences } from "./board/useBoardPreferences"
 import StatusFilterBar from "./StatusFiterBar"
+import { useEffect, useMemo } from "react"
 
-export default async function Board() {
-  const supabase = createSupabaseBrowserClient()
+const STATUS_ORDER: ProjectStatus[] = [
+  "inquiry",
+  "proposal",
+  "negotiation",
+  "active",
+  "waiting",
+  "completed",
+]
 
-  const { data, error } = await supabase.from("projects").select("*").limit(5)
-  console.log("sample data", { data, error })
+type BoardProps = {
+  // initialProjects: Project[]
+}
+
+export default function Board({}: BoardProps) {
+  const { prefs, toggleStatus } = useBoardPreferences()
+
+  const visibleStatuses = useMemo(() => {
+    console.log(
+      "[visibleStatuses] Calculating visibleStatuses with prefs:",
+      prefs.visibleStatuses,
+    )
+    return STATUS_ORDER.filter((status) => prefs.visibleStatuses[status])
+  }, [prefs.visibleStatuses])
 
   return (
     <>
       <div className="flex flex-col h-screen w-screen items-center justify-center p-16">
         <h1 className="text-2xl font-bold">Freelance Board</h1>
-        <StatusFilterBar />
+        <StatusFilterBar
+          statuses={STATUS_ORDER}
+          visibleStatuses={visibleStatuses}
+          toggleStatus={toggleStatus}
+        />
       </div>
     </>
   )
