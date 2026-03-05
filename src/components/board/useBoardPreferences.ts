@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { ProjectStatus } from "@/domain/project"
+import { ProjectCardField } from "./types"
 
 export type BoardPreferences = {
   visibleStatuses: Record<ProjectStatus, boolean>
-  visibleCardFields: Record<
-    "client" | "budget" | "deadline" | "priority",
-    boolean
-  >
+  visibleCardFields: Record<ProjectCardField, boolean>
 }
 
 const STORAGE_KEY = "freelance-board:prefs:v1"
