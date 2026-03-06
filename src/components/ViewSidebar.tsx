@@ -3,7 +3,7 @@ import { Button } from "./ui/button"
 import { Label } from "./ui/label"
 import { EyeClosedIcon, EyeIcon } from "lucide-react"
 
-type BoardProps = {
+type ViewSidebarProps = {
   visibleCardFields: Record<ProjectCardField, boolean>
   toggleCardField: (field: ProjectCardField) => void
 }
@@ -11,7 +11,7 @@ type BoardProps = {
 export default function ViewSidebar({
   visibleCardFields,
   toggleCardField,
-}: BoardProps) {
+}: ViewSidebarProps) {
   const handleReset = () => {
     Object.keys(visibleCardFields).forEach((field) => {
       const cardField = field as ProjectCardField
@@ -24,7 +24,7 @@ export default function ViewSidebar({
   return (
     <div className="flex flex-col">
       <h2 className="text-lg font-semibold mb-4">View Card Fields</h2>
-      <div className="flex space-between mb-8">
+      <div className="flex justify-between mb-8">
         <Label>
           Visible:{" "}
           {

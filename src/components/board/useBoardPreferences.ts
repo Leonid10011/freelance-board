@@ -62,7 +62,6 @@ export function useBoardPreferences() {
   }, [prefs])
 
   function toggleStatus(status: ProjectStatus) {
-    console.log("[toggleStatus]Toggling status", status)
     setPrefs((p) => ({
       ...p,
       visibleStatuses: {
@@ -70,13 +69,8 @@ export function useBoardPreferences() {
         [status]: !p.visibleStatuses[status],
       },
     }))
-    console.log("New visibleStatuses:", {
-      ...prefs.visibleStatuses,
-      [status]: !prefs.visibleStatuses[status],
-    })
   }
   function toggleCardField(field: keyof BoardPreferences["visibleCardFields"]) {
-    console.log("[toggleCardField]Toggling card field", field)
     setPrefs((p) => ({
       ...p,
       visibleCardFields: {

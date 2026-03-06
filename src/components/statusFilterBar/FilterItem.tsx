@@ -1,5 +1,4 @@
 import { ProjectStatus } from "@/domain/project"
-import { useBoardPreferences } from "../board/useBoardPreferences"
 
 type FilterItemProps = {
   label: string
@@ -13,7 +12,6 @@ export default function FilterItem({
   toggleStatus,
 }: FilterItemProps) {
   const handleClick = () => {
-    console.log("Toggling status:", label)
     toggleStatus(label as ProjectStatus)
   }
 
