@@ -13,11 +13,11 @@ const STORAGE_KEY = "freelance-board:prefs:v1"
 
 const DEFAULT_PREFS: BoardPreferences = {
   visibleStatuses: {
-    inquiry: true,
-    proposal: true,
+    inquiry: false,
+    proposal: false,
     negotiation: false,
-    active: true,
-    waiting: true,
+    active: false,
+    waiting: false,
     completed: false,
   },
   visibleCardFields: {

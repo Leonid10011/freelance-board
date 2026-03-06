@@ -3,7 +3,7 @@
 import { Project, ProjectStatus } from "@/domain/project"
 import { useBoardPreferences } from "./board/useBoardPreferences"
 import StatusFilterBar from "./StatusFiterBar"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 
@@ -22,6 +22,8 @@ type BoardProps = {
 
 export default function Board({ initialProjects }: BoardProps) {
   const { prefs, toggleStatus, toggleCardField } = useBoardPreferences()
+
+  const [projects, setProjects] = useState<Project[]>(initialProjects)
 
   const exampleProject: Project = {
     id: "proj-001",
@@ -51,6 +53,23 @@ export default function Board({ initialProjects }: BoardProps) {
     return prefs.visibleCardFields
   }, [prefs.visibleCardFields])
 
+  const projectByStatus = useMemo(() => {
+    const map: Record<ProjectStatus, Project[]> = {
+      inquiry: [],
+      proposal: [],
+      negotiation: [],
+      active: [],
+      waiting: [],
+      completed: [],
+    }
+
+    projects.forEach((project) => {
+      map[project.status].push(project)
+    })
+
+    return map
+  }, [projects])
+
   return (
     <div className="h-screen w-screen overflow-hidden">
       <header className="border-b px-6 py-4 height-16">
@@ -69,14 +88,9 @@ export default function Board({ initialProjects }: BoardProps) {
           {visibleStatuses.map((status) => (
             <Column
               key={status}
-              projects={initialProjects.filter(
-                (project) => project.status === status,
-              )}
+              projects={projectByStatus[status]}
               visibleCardFields={visibleCardFields}
-              projectCount={
-                initialProjects.filter((project) => project.status === status)
-                  .length
-              }
+              projectCount={projectByStatus[status].length}
               status={status}
             />
           ))}

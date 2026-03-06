@@ -40,29 +40,32 @@ export default function Column({
           <CirclePlus className="w-6 h-6 text-green-500 cursor-pointer" />
         </button>
       </div>
-      {projects.map((project) => {
-        return (
-          <div
-            className="flex flex-col gap-2 py-4 px-8 bg-white rounded-2xl shadow p-4"
-            key={project.id}
-          >
-            <h3 className="text-xl font-semibold">{project.title}</h3>
-            {visibleCardFields.client && <div>Client: {project.client}</div>}
-            {visibleCardFields.budget && <div>Budget: ${project.budget}</div>}
-            {visibleCardFields.deadline && (
-              <div>
-                Deadline:{" "}
-                {project.deadline
-                  ? project.deadline.toLocaleDateString()
-                  : "N/A"}
-              </div>
-            )}
-            {visibleCardFields.priority && (
-              <div>Priority: {project.priority}</div>
-            )}
-          </div>
-        )
-      })}
+      {/* Projects */}
+      <div className="flex flex-col gap-4">
+        {projects.map((project) => {
+          return (
+            <div
+              className="flex flex-col gap-2 py-4 px-8 bg-white rounded-2xl shadow p-4"
+              key={project.id}
+            >
+              <h3 className="text-xl font-semibold">{project.title}</h3>
+              {visibleCardFields.client && <div>Client: {project.client}</div>}
+              {visibleCardFields.budget && <div>Budget: ${project.budget}</div>}
+              {visibleCardFields.deadline && (
+                <div>
+                  Deadline:{" "}
+                  {project.deadline
+                    ? project.deadline.toLocaleDateString()
+                    : "N/A"}
+                </div>
+              )}
+              {visibleCardFields.priority && (
+                <div>Priority: {project.priority}</div>
+              )}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
