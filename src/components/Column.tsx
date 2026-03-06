@@ -1,18 +1,22 @@
 import { Project, ProjectStatus } from "@/domain/project"
 import { VisibleCardFields } from "./board/types"
 import { CirclePlus } from "lucide-react"
-import { stat } from "fs"
+import ProjectCard from "./ProjectCard"
 
 export default function Column({
   projects,
   visibleCardFields,
   projectCount,
   status,
+  availableStatuses,
+  onProjectStatusChange,
 }: {
   projects: Project[]
   visibleCardFields: VisibleCardFields
   projectCount: number
   status: ProjectStatus
+  availableStatuses: ProjectStatus[]
+  onProjectStatusChange: (projectId: string, newStatus: ProjectStatus) => void
 }) {
   const handleAddProject = () => {
     /*TODO: Open a modal to create a new project with status = project.status
@@ -45,29 +49,13 @@ export default function Column({
         {projects.length > 0 ? (
           projects.map((project) => {
             return (
-              <div
-                className="flex flex-col gap-2 py-4 px-8 bg-white rounded-2xl shadow p-4"
+              <ProjectCard
                 key={project.id}
-              >
-                <h3 className="text-xl font-semibold">{project.title}</h3>
-                {visibleCardFields.client && (
-                  <div>Client: {project.client}</div>
-                )}
-                {visibleCardFields.budget && (
-                  <div>Budget: ${project.budget}</div>
-                )}
-                {visibleCardFields.deadline && (
-                  <div>
-                    Deadline:{" "}
-                    {project.deadline
-                      ? project.deadline.toLocaleDateString()
-                      : "N/A"}
-                  </div>
-                )}
-                {visibleCardFields.priority && (
-                  <div>Priority: {project.priority}</div>
-                )}
-              </div>
+                project={project}
+                visibleCardFields={visibleCardFields}
+                allStatuses={availableStatuses}
+                onStatusChange={onProjectStatusChange}
+              />
             )
           })
         ) : (
