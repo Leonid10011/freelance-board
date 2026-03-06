@@ -25,16 +25,23 @@ export default function Board({ initialProjects }: BoardProps) {
 
   const [projects, setProjects] = useState<Project[]>(initialProjects)
 
-  const exampleProject: Project = {
-    id: "proj-001",
-    title: "Landingpage Redesign",
-    client: "Muster GmbH",
-    budget: 3500,
-    deadline: new Date("2026-04-15"),
-    status: "proposal",
-    priority: "high",
-    createdAt: new Date("2026-03-01"),
-    updatedAt: new Date("2026-03-06"),
+  const handleProjectStatusChange = (
+    projectId: string,
+    newStatus: ProjectStatus,
+  ) => {
+    setProjects((currentProjects) =>
+      currentProjects.map((project) => {
+        if (project.id !== projectId) {
+          return project
+        }
+
+        return {
+          ...project,
+          status: newStatus,
+          updatedAt: new Date(),
+        }
+      }),
+    )
   }
 
   const visibleStatuses = useMemo(() => {
@@ -92,6 +99,8 @@ export default function Board({ initialProjects }: BoardProps) {
               visibleCardFields={visibleCardFields}
               projectCount={projectByStatus[status].length}
               status={status}
+              availableStatuses={STATUS_ORDER}
+              onProjectStatusChange={handleProjectStatusChange}
             />
           ))}
         </main>
