@@ -1,0 +1,20 @@
+# Build-Ordner
+.next
+dist
+build
+out
+
+# Dependencies
+node_modules
+
+# Statische Dateien
+public
+*.ico
+*.svg
+*.png
+*.jpg
+
+# Configs & Logs
+.env*
+*.log
+package-lock.json
