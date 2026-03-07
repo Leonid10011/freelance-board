@@ -8,7 +8,6 @@ import {
 } from "@/domain/project"
 import { User, X } from "lucide-react"
 import { useEffect, useState } from "react"
-import { VisibleCardFields } from "./board/types"
 import FieldLabel from "./projectModal/FieldLabel"
 import { Input } from "./ui/input"
 import DatePicker from "./projectModal/DatePicker"
