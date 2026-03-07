@@ -6,6 +6,7 @@ import StatusFilterBar from "./StatusFiterBar"
 import { useMemo, useState } from "react"
 import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
+import ProjectModal from "./ProjectModal"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -22,7 +23,8 @@ type BoardProps = {
 
 export default function Board({ initialProjects }: BoardProps) {
   const { prefs, toggleStatus, toggleCardField } = useBoardPreferences()
-
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false)
+  const [initialStatus, setInitialStatus] = useState<ProjectStatus>("inquiry")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
 
   const handleProjectStatusChange = (
@@ -101,6 +103,8 @@ export default function Board({ initialProjects }: BoardProps) {
               status={status}
               availableStatuses={STATUS_ORDER}
               onProjectStatusChange={handleProjectStatusChange}
+              setModalOpen={setIsProjectModalOpen}
+              setInitialStatus={setInitialStatus}
             />
           ))}
         </main>
@@ -111,6 +115,12 @@ export default function Board({ initialProjects }: BoardProps) {
           />
         </aside>
       </div>
+      {isProjectModalOpen && (
+        <ProjectModal
+          onClose={setIsProjectModalOpen}
+          initialStatus={initialStatus}
+        />
+      )}
     </div>
   )
 }

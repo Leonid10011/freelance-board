@@ -10,6 +10,8 @@ export default function Column({
   status,
   availableStatuses,
   onProjectStatusChange,
+  setModalOpen,
+  setInitialStatus,
 }: {
   projects: Project[]
   visibleCardFields: VisibleCardFields
@@ -17,13 +19,16 @@ export default function Column({
   status: ProjectStatus
   availableStatuses: ProjectStatus[]
   onProjectStatusChange: (projectId: string, newStatus: ProjectStatus) => void
+  setModalOpen: (isOpen: boolean) => void
+  setInitialStatus: (status: ProjectStatus) => void
 }) {
   const handleAddProject = () => {
     /*TODO: Open a modal to create a new project with status = project.status
         - Pre-fill the status field in the modal with project.status
         - On submit, add the new project to the board and close the modal
-
         */
+    setInitialStatus(status)
+    setModalOpen(true)
   }
 
   return (
