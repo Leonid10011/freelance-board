@@ -117,6 +117,7 @@ export default function Board({ initialProjects }: BoardProps) {
       </div>
       {isProjectModalOpen && (
         <ProjectModal
+          labels={visibleCardFields}
           onClose={setIsProjectModalOpen}
           initialStatus={initialStatus}
         />
