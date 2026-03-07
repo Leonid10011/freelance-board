@@ -1,10 +1,18 @@
 "use client"
 
-import { ProjectStatus } from "@/domain/project"
+import {
+  PROJECT_PRIORITIES,
+  PROJECT_STATUSES,
+  ProjectPriority,
+  ProjectStatus,
+} from "@/domain/project"
 import { User, X } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { VisibleCardFields } from "./board/types"
-import InputField from "./projectModal/InputField"
+import FieldLabel from "./projectModal/FieldLabel"
+import { Input } from "./ui/input"
+import DatePicker from "./projectModal/DatePicker"
+import { SelectField } from "./projectModal/SelectField"
 
 type ProjectModalProps = {
   onClose: (isOpen: boolean) => void
@@ -15,8 +23,11 @@ type ProjectModalProps = {
 export default function ProjectModal({
   onClose,
   initialStatus,
-  labels,
 }: ProjectModalProps) {
+  const [date, setDate] = useState<Date | undefined>(undefined)
+  const [status, setStatus] = useState<ProjectStatus>(initialStatus)
+  const [priority, setPriority] = useState<ProjectPriority>("medium")
+
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -49,14 +60,38 @@ export default function ProjectModal({
         </div>
         <input
           placeholder="New Project"
-          className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 py-2"
+          className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 py-2 mb-8"
         />
-        <InputField
-          icon={<User className="w-6 h-6" />}
-          label="Client Name"
-          type="input"
-          onChange={() => {}}
-        />
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row gap-4">
+            <FieldLabel icon={<User className="w-4 h-4" />} label="Client" />
+            <Input placeholder="Empty" className="w-full" />
+          </div>
+          <div className="flex flex-row gap-4">
+            <FieldLabel icon={<User className="w-4 h-4" />} label="Budget" />
+            <Input placeholder="Empty" className="w-full" />
+          </div>
+          <div className="flex flex-row gap-4">
+            <FieldLabel icon={<User className="w-4 h-4" />} label="Deadline" />
+            <DatePicker date={date} setDate={setDate} />
+          </div>
+          <div className="flex flex-row gap-4">
+            <FieldLabel icon={<User className="w-4 h-4" />} label="Status" />
+            <SelectField
+              label="Status"
+              values={PROJECT_STATUSES}
+              setValue={setStatus}
+            />
+          </div>
+          <div className="flex flex-row gap-4">
+            <FieldLabel icon={<User className="w-4 h-4" />} label="Priority" />
+            <SelectField
+              label="Priority"
+              values={PROJECT_PRIORITIES}
+              setValue={setPriority}
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
