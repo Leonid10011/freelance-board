@@ -17,7 +17,6 @@ import { SelectField } from "./projectModal/SelectField"
 type ProjectModalProps = {
   onClose: (isOpen: boolean) => void
   initialStatus: ProjectStatus
-  labels: VisibleCardFields
 }
 
 export default function ProjectModal({
@@ -80,6 +79,7 @@ export default function ProjectModal({
             <SelectField
               label="Status"
               values={PROJECT_STATUSES}
+              value={status}
               setValue={setStatus}
             />
           </div>
@@ -88,8 +88,18 @@ export default function ProjectModal({
             <SelectField
               label="Priority"
               values={PROJECT_PRIORITIES}
+              value={priority}
               setValue={setPriority}
             />
+          </div>
+          {/* Footer - Save Button */}
+          <div className="flex flex-row justify-end gap-8 mt-4">
+            <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hover:cursor-pointer">
+              Cancel
+            </button>
+            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer">
+              Save
+            </button>
           </div>
         </div>
       </div>

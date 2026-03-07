@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ProjectPriority, ProjectStatus } from "@/domain/project"
 
 export function SelectField<T extends string>({
   label,
