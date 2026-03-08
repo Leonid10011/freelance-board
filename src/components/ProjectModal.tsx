@@ -12,6 +12,7 @@ import FieldLabel from "./projectModal/FieldLabel"
 import { Input } from "./ui/input"
 import DatePicker from "./projectModal/DatePicker"
 import { SelectField } from "./projectModal/SelectField"
+import { CreateProjectSchema } from "@/validation/project.schema"
 
 type ProjectModalProps = {
   onClose: (isOpen: boolean) => void
@@ -25,6 +26,36 @@ export default function ProjectModal({
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [status, setStatus] = useState<ProjectStatus>(initialStatus)
   const [priority, setPriority] = useState<ProjectPriority>("medium")
+
+  const [formState, setFormState] = useState({
+    title: "",
+    client: "",
+    budget: "",
+    deadline: date,
+    status,
+    priority,
+  })
+
+  const handleInputChange = (
+    field: string,
+    value: string | Date | ProjectStatus | ProjectPriority,
+  ) => {
+    setFormState({
+      ...formState,
+      [field]: value,
+    })
+  }
+
+  const handleSave = () => {
+    // Here you would typically send formState to your backend or state management
+    const validatedData = CreateProjectSchema.safeParse(formState)
+    if (!validatedData.success) {
+      console.error("Validation failed:", validatedData.error.message)
+      return
+    }
+    console.log("Saving project with data:", formState)
+    //onClose(false)
+  }
 
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
@@ -59,15 +90,24 @@ export default function ProjectModal({
         <input
           placeholder="New Project"
           className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 py-2 mb-8"
+          onChange={(e) => handleInputChange("title", e.target.value)}
         />
         <div className="flex flex-col gap-4">
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Client" />
-            <Input placeholder="Empty" className="w-full" />
+            <Input
+              placeholder="Empty"
+              className="w-full"
+              onChange={(e) => handleInputChange("client", e.target.value)}
+            />
           </div>
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Budget" />
-            <Input placeholder="Empty" className="w-full" />
+            <Input
+              placeholder="Empty"
+              className="w-full"
+              onChange={(e) => handleInputChange("budget", e.target.value)}
+            />
           </div>
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Deadline" />
@@ -96,7 +136,10 @@ export default function ProjectModal({
             <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hover:cursor-pointer">
               Cancel
             </button>
-            <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer">
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
+              onClick={handleSave}
+            >
               Save
             </button>
           </div>

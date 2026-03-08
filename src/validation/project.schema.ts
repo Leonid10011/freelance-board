@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 const ProjectStatusSchema = z.enum([
   "inquiry",
@@ -29,8 +29,7 @@ const DateSchema = z
     message: "Invalid date",
   })
 
-
- export const BaseProjectSchema = z.object({
+export const BaseProjectSchema = z.object({
   title: z.string().min(1).max(120),
   client: z.string().trim().min(1).max(120).optional(),
   budget: MoneySchema.optional(),
