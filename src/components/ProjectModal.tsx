@@ -14,7 +14,7 @@ import { Input } from "./ui/input"
 import DatePicker from "./projectModal/DatePicker"
 import { SelectField } from "./projectModal/SelectField"
 import { CreateProjectSchema } from "@/validation/project.schema"
-import { format } from "date-fns"
+import { format, parse } from "date-fns"
 import { createProject } from "@/repo/project.repo"
 
 type ProjectModalProps = {
@@ -109,6 +109,10 @@ export default function ProjectModal({
     }
   }, [onClose])
 
+  const datePickerDate = formState.deadline
+    ? parse(formState.deadline, "yyyy-MM-dd", new Date())
+    : undefined
+
   return (
     <div aria-modal="true" role="dialog">
       <div
@@ -153,7 +157,7 @@ export default function ProjectModal({
           </div>
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Deadline" />
-            <DatePicker setDate={handleDateChange} />
+            <DatePicker date={datePickerDate} setDate={handleDateChange} />
           </div>
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Status" />

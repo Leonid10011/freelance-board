@@ -8,11 +8,13 @@ import { ChevronDownIcon } from "lucide-react"
 import { useState } from "react"
 
 export default function DatePicker({
+  date,
   setDate,
 }: {
+  date: Date | undefined
   setDate: (date: Date) => void
 }) {
-  const [date, setDateState] = useState<Date>()
+  const [dateState, setDateState] = useState<Date>()
 
   const handleDateChange = (newDate: Date) => {
     setDateState(newDate)
@@ -37,7 +39,7 @@ export default function DatePicker({
           mode="single"
           selected={date}
           onSelect={handleDateChange}
-          defaultMonth={date}
+          defaultMonth={dateState}
           required
         />
       </PopoverContent>
