@@ -129,6 +129,7 @@ export default function ProjectModal({
           placeholder="New Project"
           className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 py-2 mb-8"
           onChange={(e) => handleInputChange("title", e.target.value)}
+          value={formState.title}
         />
         <div className="flex flex-col gap-4">
           <div className="flex flex-row gap-4">
