@@ -40,7 +40,7 @@ export default function ProjectModal({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const [saveError, setSaveError] = useState<string | null>(null)
-  const [saveSuccess, setSaveSuccess] = useState<string | null>(null)
+  // const [saveSuccess, setSaveSuccess] = useState<string | null>(null) /* Later for Taost implementation */
 
   const handleDateChange = (newDate: Date) => {
     setFormState((prev) => ({
@@ -74,7 +74,6 @@ export default function ProjectModal({
   }
 
   const handleSave = async () => {
-    // Here you would typically send formState to your backend or state management
     if (isSubmitting) {
       console.warn("Already submitting, please wait...")
       return
@@ -82,7 +81,7 @@ export default function ProjectModal({
 
     try {
       setSaveError(null)
-      setSaveSuccess(null)
+      // setSaveSuccess(null)  /* Temporarily disable success message to focus on error handling */
       setIsSubmitting(true)
       const validatedData = CreateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
@@ -90,7 +89,7 @@ export default function ProjectModal({
         return
       }
       const result = await createProject(validatedData.data)
-      setSaveSuccess("Project created successfully!")
+      // setSaveSuccess("Project created successfully!") /* Temporarily disable success message to focus on error handling */
       onSave(result)
       onClose(false)
     } catch (error) {
