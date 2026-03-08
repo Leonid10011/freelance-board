@@ -13,6 +13,7 @@ import { Input } from "./ui/input"
 import DatePicker from "./projectModal/DatePicker"
 import { SelectField } from "./projectModal/SelectField"
 import { CreateProjectSchema } from "@/validation/project.schema"
+import { format } from "date-fns"
 
 type ProjectModalProps = {
   onClose: (isOpen: boolean) => void
@@ -23,22 +24,40 @@ export default function ProjectModal({
   onClose,
   initialStatus,
 }: ProjectModalProps) {
-  const [date, setDate] = useState<Date | undefined>(undefined)
-  const [status, setStatus] = useState<ProjectStatus>(initialStatus)
-  const [priority, setPriority] = useState<ProjectPriority>("medium")
-
   const [formState, setFormState] = useState({
     title: "",
     client: "",
     budget: "",
-    deadline: date,
-    status,
-    priority,
+    deadline: "",
+    status: initialStatus,
+    priority: "medium",
   })
+
+  const handleDateChange = (newDate: Date) => {
+    setFormState({
+      ...formState,
+      deadline: format(newDate, "yyyy-MM-dd"), // Format as YYYY-MM-DD
+    })
+    console.log("formstate date:", formState.deadline)
+  }
+
+  const handleProjectStatusChange = (newStatus: ProjectStatus) => {
+    setFormState({
+      ...formState,
+      status: newStatus,
+    })
+  }
+
+  const handleProjectPriorityChange = (newPriority: ProjectPriority) => {
+    setFormState({
+      ...formState,
+      priority: newPriority,
+    })
+  }
 
   const handleInputChange = (
     field: string,
-    value: string | Date | ProjectStatus | ProjectPriority,
+    value: string | ProjectStatus | ProjectPriority,
   ) => {
     setFormState({
       ...formState,
@@ -111,15 +130,15 @@ export default function ProjectModal({
           </div>
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Deadline" />
-            <DatePicker date={date} setDate={setDate} />
+            <DatePicker setDate={handleDateChange} />
           </div>
           <div className="flex flex-row gap-4">
             <FieldLabel icon={<User className="w-4 h-4" />} label="Status" />
             <SelectField
               label="Status"
               values={PROJECT_STATUSES}
-              value={status}
-              setValue={setStatus}
+              value={initialStatus}
+              setValue={handleProjectStatusChange}
             />
           </div>
           <div className="flex flex-row gap-4">
@@ -127,8 +146,8 @@ export default function ProjectModal({
             <SelectField
               label="Priority"
               values={PROJECT_PRIORITIES}
-              value={priority}
-              setValue={setPriority}
+              value={"medium"}
+              setValue={handleProjectPriorityChange}
             />
           </div>
           {/* Footer - Save Button */}
