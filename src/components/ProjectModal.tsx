@@ -76,7 +76,7 @@ export default function ProjectModal({
     console.log("Saving project with data:", formState)
     const result = createProject(validatedData.data)
     console.log("Create project result:", result)
-    //onClose(false)
+    onClose(false)
   }
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function ProjectModal({
     return () => {
       removeEventListener("keydown", handleEscapeKey)
     }
-  }, [, onClose])
+  }, [onClose])
 
   return (
     <div aria-modal="true" role="dialog">
