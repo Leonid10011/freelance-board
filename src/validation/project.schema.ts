@@ -15,7 +15,6 @@ const ProjectPrioritySchema = z.enum(["low", "medium", "high"])
 const MoneySchema = z
   .union([z.number(), z.string()])
   .transform((v) => (typeof v === "string" ? v.trim() : v))
-  .refine((v) => v !== "", { message: "Budget is required" })
   .transform((v) => (typeof v === "string" ? Number(v) : v))
   .refine((v) => Number.isFinite(v), { message: "Budget must be a number" })
   .refine((v) => v >= 0, { message: "Budget must be ≥ 0" })
@@ -23,7 +22,6 @@ const MoneySchema = z
 const DateSchema = z
   .union([z.date(), z.string()])
   .transform((v) => (typeof v === "string" ? v.trim() : v))
-  .refine((v) => v !== "", { message: "Deadline is required" })
   .transform((v) => (typeof v === "string" ? new Date(v) : v))
   .refine((d) => d instanceof Date && !Number.isNaN(d.getTime()), {
     message: "Invalid date",
