@@ -89,15 +89,21 @@ export default function ProjectCard({
       </div>
       {/*Project Details - only show fields that are enabled in visibleCardFields*/}
       <div className="flex flex-col gap-4 p-0">
-        {visibleCardFields.client && <div>Client: {project.client}</div>}
-        {visibleCardFields.budget && <div>Budget: {project.budget}</div>}
+        {visibleCardFields.client && (
+          <div>Client: {project.client ?? "N/A"}</div>
+        )}
+        {visibleCardFields.budget && (
+          <div>Budget: {project.budget ?? "N/A"}</div>
+        )}
         {visibleCardFields.deadline && (
           <div>
             Deadline:{" "}
             {project.deadline ? project.deadline.toLocaleDateString() : "N/A"}
           </div>
         )}
-        {visibleCardFields.priority && <div>Priority: {project.priority}</div>}
+        {visibleCardFields.priority && (
+          <div>Priority: {project.priority ?? "N/A"}</div>
+        )}
       </div>
     </div>
   )
