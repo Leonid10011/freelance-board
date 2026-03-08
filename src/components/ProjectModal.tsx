@@ -14,6 +14,7 @@ import DatePicker from "./projectModal/DatePicker"
 import { SelectField } from "./projectModal/SelectField"
 import { CreateProjectSchema } from "@/validation/project.schema"
 import { format } from "date-fns"
+import { createProject } from "@/repo/project.repo"
 
 type ProjectModalProps = {
   onClose: (isOpen: boolean) => void
@@ -73,6 +74,8 @@ export default function ProjectModal({
       return
     }
     console.log("Saving project with data:", formState)
+    const result = createProject(validatedData.data)
+    console.log("Create project result:", result)
     //onClose(false)
   }
 
