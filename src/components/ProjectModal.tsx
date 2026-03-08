@@ -37,41 +37,48 @@ export default function ProjectModal({
     priority: "medium" as ProjectPriority,
   })
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
   const handleDateChange = (newDate: Date) => {
-    setFormState({
-      ...formState,
+    setFormState((prev) => ({
+      ...prev,
       deadline: format(newDate, "yyyy-MM-dd"), // Format as YYYY-MM-DD
-    })
-    console.log("formstate date:", formState.deadline)
+    }))
   }
 
   const handleProjectStatusChange = (newStatus: ProjectStatus) => {
-    setFormState({
-      ...formState,
+    setFormState((prev) => ({
+      ...prev,
       status: newStatus,
-    })
+    }))
   }
 
   const handleProjectPriorityChange = (newPriority: ProjectPriority) => {
-    setFormState({
-      ...formState,
+    setFormState((prev) => ({
+      ...prev,
       priority: newPriority,
-    })
+    }))
   }
 
   const handleInputChange = (
     field: string,
     value: string | ProjectStatus | ProjectPriority,
   ) => {
-    setFormState({
-      ...formState,
+    setFormState((prev) => ({
+      ...prev,
       [field]: value,
-    })
+    }))
   }
 
   const handleSave = async () => {
     // Here you would typically send formState to your backend or state management
+    if (isSubmitting) {
+      console.warn("Already submitting, please wait...")
+      return
+    }
+
     try {
+      setIsSubmitting(true)
       const validatedData = CreateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
         console.error("Validation failed:", validatedData.error)
@@ -83,6 +90,8 @@ export default function ProjectModal({
     } catch (error) {
       console.error("Error creating project:", error)
       // Optionally, you could set an error state here to display an error message in the UI
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -174,6 +183,7 @@ export default function ProjectModal({
             <button
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 hover:cursor-pointer"
               onClick={handleSave}
+              disabled={isSubmitting}
             >
               Save
             </button>
