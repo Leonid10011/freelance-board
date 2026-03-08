@@ -96,7 +96,7 @@ export async function updateProject(
   } else {
     const patch = toProjectUpdatePatch(_input)
     console.log("Generated patch for update:", patch)
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("projects")
       .update(patch)
       .eq("id", _id)
