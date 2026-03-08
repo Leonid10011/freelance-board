@@ -87,7 +87,6 @@ export default function ProjectModal({
       const validatedData = CreateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
         console.error("Validation failed:", validatedData.error)
-        setSaveError("Validation failed. Please check your input.")
         return
       }
       const result = await createProject(validatedData.data)
