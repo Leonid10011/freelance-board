@@ -156,7 +156,10 @@ export default function ProjectModal({
           </div>
           {/* Footer - Save Button */}
           <div className="flex flex-row justify-end gap-8 mt-4">
-            <button className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hover:cursor-pointer">
+            <button
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hover:cursor-pointer"
+              onClick={() => onClose(false)}
+            >
               Cancel
             </button>
             <button
