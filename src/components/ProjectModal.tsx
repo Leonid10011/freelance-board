@@ -127,8 +127,9 @@ export default function ProjectModal({
             <FieldLabel icon={<User className="w-4 h-4" />} label="Budget" />
             <Input
               placeholder="Empty"
-              className="w-full"
+              className="w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               onChange={(e) => handleInputChange("budget", e.target.value)}
+              type="number"
             />
           </div>
           <div className="flex flex-row gap-4">
