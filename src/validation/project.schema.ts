@@ -43,9 +43,15 @@ const TitleSchema = z.preprocess((raw) => {
   return raw
 }, z.string().trim().min(1).max(120))
 
+const ClientSchema = z.preprocess((raw) => {
+  if (typeof raw === "string" && raw.trim() === "") {
+    return undefined
+  }
+}, z.string().trim().min(1).max(120).optional())
+
 export const BaseProjectSchema = z.object({
   title: TitleSchema,
-  client: z.string().trim().min(1).max(120).optional(),
+  client: ClientSchema,
   budget: MoneySchema.optional(),
   deadline: DateSchema.optional(),
   status: ProjectStatusSchema,
