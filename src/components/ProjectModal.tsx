@@ -63,10 +63,7 @@ export default function ProjectModal({
     }))
   }
 
-  const handleInputChange = (
-    field: string,
-    value: string | ProjectStatus | ProjectPriority,
-  ) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormState((prev) => ({
       ...prev,
       [field]: value,
