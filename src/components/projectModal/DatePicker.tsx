@@ -5,14 +5,21 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 import { Calendar } from "../ui/calendar"
 import { ChevronDownIcon } from "lucide-react"
+import { useState } from "react"
 
 export default function DatePicker({
-  date,
   setDate,
 }: {
-  date: Date | undefined
-  setDate: (date: Date | undefined) => void
+  setDate: (date: Date) => void
 }) {
+  const [date, setDateState] = useState<Date>(new Date())
+
+  const handleDateChange = (newDate: Date) => {
+    setDateState(newDate)
+    setDate(newDate)
+    console.log("Selected date:", newDate)
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -21,7 +28,7 @@ export default function DatePicker({
           data-empty={!date}
           className="w-[212px] justify-between text-left font-normal data-[empty=true]:text-muted-foreground"
         >
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(new Date(date), "PPP") : <span>Pick a date</span>}
           <ChevronDownIcon data-icon="inline-end" />
         </Button>
       </PopoverTrigger>
@@ -29,8 +36,9 @@ export default function DatePicker({
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleDateChange}
           defaultMonth={date}
+          required
         />
       </PopoverContent>
     </Popover>
