@@ -36,9 +36,15 @@ const DateSchema = z.preprocess(
       { message: "Invalid date" },
     ),
 )
+const TitleSchema = z.preprocess((raw) => {
+  if (typeof raw === "string" && raw.trim() === "") {
+    return "New Project"
+  }
+  return raw
+}, z.string().trim().min(1).max(120))
 
 export const BaseProjectSchema = z.object({
-  title: z.string().min(1).max(120),
+  title: TitleSchema,
   client: z.string().trim().min(1).max(120).optional(),
   budget: MoneySchema.optional(),
   deadline: DateSchema.optional(),
