@@ -46,6 +46,10 @@ export default function Board({ initialProjects }: BoardProps) {
     )
   }
 
+  const handleAddProject = (newProject: Project) => {
+    setProjects((currentProjects) => [...currentProjects, newProject])
+  }
+
   const visibleStatuses = useMemo(() => {
     console.log(
       "[visibleStatuses] Calculating visibleStatuses with prefs:",
@@ -119,6 +123,7 @@ export default function Board({ initialProjects }: BoardProps) {
         <ProjectModal
           onClose={setIsProjectModalOpen}
           initialStatus={initialStatus}
+          onSave={handleAddProject}
         />
       )}
     </div>

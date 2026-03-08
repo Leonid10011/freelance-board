@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  Project,
   PROJECT_PRIORITIES,
   PROJECT_STATUSES,
   ProjectPriority,
@@ -19,11 +20,13 @@ import { createProject } from "@/repo/project.repo"
 type ProjectModalProps = {
   onClose: (isOpen: boolean) => void
   initialStatus: ProjectStatus
+  onSave: (newProject: Project) => void
 }
 
 export default function ProjectModal({
   onClose,
   initialStatus,
+  onSave,
 }: ProjectModalProps) {
   const [formState, setFormState] = useState({
     title: "",
@@ -66,7 +69,7 @@ export default function ProjectModal({
     })
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Here you would typically send formState to your backend or state management
     const validatedData = CreateProjectSchema.safeParse(formState)
     if (!validatedData.success) {
@@ -74,7 +77,8 @@ export default function ProjectModal({
       return
     }
     console.log("Saving project with data:", formState)
-    const result = createProject(validatedData.data)
+    const result = await createProject(validatedData.data)
+    onSave(result)
     console.log("Create project result:", result)
     onClose(false)
   }
