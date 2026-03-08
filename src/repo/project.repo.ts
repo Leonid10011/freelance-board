@@ -32,7 +32,7 @@ export async function listProjects(): Promise<Project[]> {
 }
 
 export async function getProjects(): Promise<Project[]> {
-  const { data, error } = await supabase.from("projects").select("*").limit(5)
+  const { data, error } = await supabase.from("projects").select("*").limit(10)
   if (error) {
     console.error("Error fetching projects:", error)
     throw new Error(error.message)
@@ -50,9 +50,6 @@ export type CreateProjectInput = {
   priority?: ProjectPriority
 }
 
-/**
- * Temporary implementation that creates a new project and adds it to the in-memory array. In a real implementation, this would insert into the database.
- */
 export async function createProject(
   input: CreateProjectValidated,
 ): Promise<Project> {

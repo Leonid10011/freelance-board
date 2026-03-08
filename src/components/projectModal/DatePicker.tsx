@@ -12,7 +12,7 @@ export default function DatePicker({
 }: {
   setDate: (date: Date) => void
 }) {
-  const [date, setDateState] = useState<Date>(new Date())
+  const [date, setDateState] = useState<Date>()
 
   const handleDateChange = (newDate: Date) => {
     setDateState(newDate)
