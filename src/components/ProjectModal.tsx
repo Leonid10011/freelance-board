@@ -34,7 +34,7 @@ export default function ProjectModal({
     budget: "",
     deadline: "",
     status: initialStatus,
-    priority: "medium",
+    priority: "medium" as ProjectPriority,
   })
 
   const handleDateChange = (newDate: Date) => {
@@ -71,16 +71,19 @@ export default function ProjectModal({
 
   const handleSave = async () => {
     // Here you would typically send formState to your backend or state management
-    const validatedData = CreateProjectSchema.safeParse(formState)
-    if (!validatedData.success) {
-      console.error("Validation failed:", validatedData.error.message)
-      return
+    try {
+      const validatedData = CreateProjectSchema.safeParse(formState)
+      if (!validatedData.success) {
+        console.error("Validation failed:", validatedData.error)
+        return
+      }
+      const result = await createProject(validatedData.data)
+      onSave(result)
+      onClose(false)
+    } catch (error) {
+      console.error("Error creating project:", error)
+      // Optionally, you could set an error state here to display an error message in the UI
     }
-    console.log("Saving project with data:", formState)
-    const result = await createProject(validatedData.data)
-    onSave(result)
-    console.log("Create project result:", result)
-    onClose(false)
   }
 
   useEffect(() => {
@@ -125,6 +128,7 @@ export default function ProjectModal({
               placeholder="Empty"
               className="w-full"
               onChange={(e) => handleInputChange("client", e.target.value)}
+              value={formState.client}
             />
           </div>
           <div className="flex flex-row gap-4">
@@ -133,6 +137,7 @@ export default function ProjectModal({
               placeholder="Empty"
               className="w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               onChange={(e) => handleInputChange("budget", e.target.value)}
+              value={formState.budget}
               type="number"
             />
           </div>
@@ -145,7 +150,7 @@ export default function ProjectModal({
             <SelectField
               label="Status"
               values={PROJECT_STATUSES}
-              value={initialStatus}
+              value={formState.status}
               setValue={handleProjectStatusChange}
             />
           </div>
@@ -154,7 +159,7 @@ export default function ProjectModal({
             <SelectField
               label="Priority"
               values={PROJECT_PRIORITIES}
-              value={"medium"}
+              value={formState.priority}
               setValue={handleProjectPriorityChange}
             />
           </div>
