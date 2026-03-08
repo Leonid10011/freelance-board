@@ -39,6 +39,9 @@ export default function ProjectModal({
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null)
+
   const handleDateChange = (newDate: Date) => {
     setFormState((prev) => ({
       ...prev,
@@ -78,18 +81,22 @@ export default function ProjectModal({
     }
 
     try {
+      setSaveError(null)
+      setSaveSuccess(null)
       setIsSubmitting(true)
       const validatedData = CreateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
         console.error("Validation failed:", validatedData.error)
+        setSaveError("Validation failed. Please check your input.")
         return
       }
       const result = await createProject(validatedData.data)
+      setSaveSuccess("Project created successfully!")
       onSave(result)
       onClose(false)
     } catch (error) {
       console.error("Error creating project:", error)
-      // Optionally, you could set an error state here to display an error message in the UI
+      setSaveError("Failed to create project. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -179,6 +186,7 @@ export default function ProjectModal({
           </div>
           {/* Footer - Save Button */}
           <div className="flex flex-row justify-end gap-8 mt-4">
+            {saveError && <p className="text-red-500">{saveError}</p>}
             <button
               className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hover:cursor-pointer"
               onClick={() => onClose(false)}
