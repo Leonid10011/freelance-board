@@ -5,6 +5,7 @@ import { format } from "date-fns"
 import { useState } from "react"
 import ProjectFormFields from "./ProjectFormFields"
 import ProjectModalShell from "./ProjectModalShell"
+import { TextFieldKey } from "./types"
 
 type CreateProjectModalProps = {
   initialStatus: ProjectStatus
@@ -51,7 +52,7 @@ export default function CreateProjectModal({
     }))
   }
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: TextFieldKey, value: string) => {
     setFormState((prev) => ({
       ...prev,
       [field]: value,
