@@ -59,6 +59,12 @@ export default function Board({ initialProjects }: BoardProps) {
   const handleEditProject = (editedProject: Project) => {
     setIsEditProjectModalOpen(true)
     setProjectToEdit(editedProject)
+
+    setProjects((currentProjects) =>
+      currentProjects.map((project) =>
+        project.id === editedProject.id ? editedProject : project,
+      ),
+    )
   }
 
   const visibleStatuses = useMemo(() => {
