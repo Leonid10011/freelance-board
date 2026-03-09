@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react"
 import { Project } from "@/domain/project"
 import { ProjectStatus } from "@/domain/project"
 import { VisibleCardFields } from "./board/types"
+import { format } from "date-fns"
 
 type ProjectCardProps = {
   project: Project
   visibleCardFields: VisibleCardFields
   allStatuses: ProjectStatus[]
   onStatusChange: (projectId: string, newStatus: ProjectStatus) => void
+  onEdit: (project: Project) => void
 }
 
 export default function ProjectCard({
@@ -17,6 +19,7 @@ export default function ProjectCard({
   visibleCardFields,
   allStatuses,
   onStatusChange,
+  onEdit,
 }: ProjectCardProps) {
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false)
   const statusDropdownRef = useRef<HTMLDivElement | null>(null)
@@ -56,7 +59,10 @@ export default function ProjectCard({
   }
 
   return (
-    <div className="flex flex-col bg-white rounded-2xl gap-6 py-4 px-6">
+    <div
+      className="flex flex-col bg-white rounded-2xl gap-6 py-4 px-6 hover:shadow-lg hover:bg-gray-100 hover:opacity-90 hover:cursor-pointer"
+      onClick={() => onEdit(project)}
+    >
       {/*Project Header*/}
       <div className="flex flex-row justify-between items-center">
         <h3 className="text-xl font-semibold">{project.title}</h3>
@@ -98,7 +104,7 @@ export default function ProjectCard({
         {visibleCardFields.deadline && (
           <div>
             Deadline:{" "}
-            {project.deadline ? project.deadline.toLocaleDateString() : "N/A"}
+            {project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"}
           </div>
         )}
         {visibleCardFields.priority && (

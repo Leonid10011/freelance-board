@@ -7,6 +7,7 @@ import { useMemo, useState } from "react"
 import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import CreateProjectModal from "./projectModal/CreateProjectModal"
+import UpdateProjectModal from "./projectModal/UpdateProjectModal"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -24,10 +25,13 @@ type BoardProps = {
 export default function Board({ initialProjects }: BoardProps) {
   const { prefs, toggleStatus, toggleCardField } = useBoardPreferences()
   const [isProjectModalShellOpen, setIsProjectModalShellOpen] = useState(false)
+  const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false)
   const [initialStatus, setInitialStatus] = useState<ProjectStatus>("inquiry")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
+  const [projectToEdit, setProjectToEdit] = useState<Project>()
 
   const closeProjectModalShell = () => setIsProjectModalShellOpen(false)
+  const closeEditProjectModal = () => setIsEditProjectModalOpen(false)
 
   const handleProjectStatusChange = (
     projectId: string,
@@ -50,6 +54,17 @@ export default function Board({ initialProjects }: BoardProps) {
 
   const handleAddProject = (newProject: Project) => {
     setProjects((currentProjects) => [...currentProjects, newProject])
+  }
+
+  const handleEditProject = (editedProject: Project) => {
+    setIsEditProjectModalOpen(true)
+    setProjectToEdit(editedProject)
+
+    setProjects((currentProjects) =>
+      currentProjects.map((project) =>
+        project.id === editedProject.id ? editedProject : project,
+      ),
+    )
   }
 
   const visibleStatuses = useMemo(() => {
@@ -102,6 +117,7 @@ export default function Board({ initialProjects }: BoardProps) {
         <main className="flex flex-row overflow-x-auto overflow-y-hidden p-6 gap-4">
           {visibleStatuses.map((status) => (
             <Column
+              onEditProject={handleEditProject}
               key={status}
               projects={projectByStatus[status]}
               visibleCardFields={visibleCardFields}
@@ -126,6 +142,15 @@ export default function Board({ initialProjects }: BoardProps) {
           onClose={closeProjectModalShell}
           initialStatus={initialStatus}
           onSave={handleAddProject}
+        />
+      )}
+      {isEditProjectModalOpen && projectToEdit && (
+        <UpdateProjectModal
+          onClose={closeEditProjectModal}
+          // You would need to pass the project to be edited here
+          // For example, you could have a state variable like `projectToEdit` and pass it here
+          project={projectToEdit}
+          onUpdate={handleEditProject}
         />
       )}
     </div>
