@@ -2,11 +2,12 @@
 
 import { Project, ProjectStatus } from "@/domain/project"
 import { useBoardPreferences } from "./board/useBoardPreferences"
-import StatusFilterBar from "./StatusFiterBar"
+import StatusFilterBar from "./StatusFilterBar"
 import { useMemo, useState } from "react"
 import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import ProjectModal from "./ProjectModal"
+import ProjectModalShell from "./projectModal/ProjectModalShell"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -120,10 +121,16 @@ export default function Board({ initialProjects }: BoardProps) {
         </aside>
       </div>
       {isProjectModalOpen && (
-        <ProjectModal
+        /*<ProjectModal
           onClose={setIsProjectModalOpen}
           initialStatus={initialStatus}
           onSave={handleAddProject}
+          */
+        <ProjectModalShell
+          onClose={setIsProjectModalOpen}
+          onPrimaryAction={() => {}}
+          isSubmitting={false}
+          primaryActionLabel="Save"
         />
       )}
     </div>
