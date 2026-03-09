@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Project } from "@/domain/project"
 import { ProjectStatus } from "@/domain/project"
 import { VisibleCardFields } from "./board/types"
+import { format } from "date-fns"
 
 type ProjectCardProps = {
   project: Project
@@ -98,7 +99,7 @@ export default function ProjectCard({
         {visibleCardFields.deadline && (
           <div>
             Deadline:{" "}
-            {project.deadline ? project.deadline.toLocaleDateString() : "N/A"}
+            {project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"}
           </div>
         )}
         {visibleCardFields.priority && (
