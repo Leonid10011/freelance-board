@@ -22,7 +22,6 @@ export function useProjectForm({
   const [saveError, setSaveError] = useState<string | null>(null)
 
   const setError = (error: string | null) => {
-    console.error("Error in project form:", error)
     setSaveError(error)
   }
 
