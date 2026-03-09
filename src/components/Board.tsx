@@ -141,7 +141,7 @@ export default function Board({ initialProjects }: BoardProps) {
       )}
       {isProjectModalShellOpen && (
         <ProjectModalShell
-          onClose={setIsProjectModalShellOpen}
+          onClose={closeProjectModalShell}
           onPrimaryAction={() => {}}
           isSubmitting={false}
           primaryActionLabel="Save"
