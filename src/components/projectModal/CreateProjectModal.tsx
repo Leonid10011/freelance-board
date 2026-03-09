@@ -61,7 +61,6 @@ export default function CreateProjectModal({
 
   const handleSave = async () => {
     if (isSubmitting) {
-      console.warn("Already submitting, please wait...")
       return
     }
 
