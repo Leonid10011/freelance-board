@@ -55,6 +55,7 @@ export default function UpdateProjectModal({
       const result = await updateProject(project.id, validatedData.data)
       // setSaveSuccess("Project updated successfully!") /* Temporarily disable success message to focus on error handling */
       onUpdate(result)
+      onClose(false)
     } catch (error) {
       console.error("Error updating project:", error)
       setError("Failed to update project. Please try again.")
