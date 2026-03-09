@@ -54,7 +54,10 @@ function initializePrefs(): BoardPreferences {
 }
 
 export function useBoardPreferences() {
-  const [prefs, setPrefs] = useState<BoardPreferences>(initializePrefs)
+  const [prefs, setPrefs] = useState<BoardPreferences>(() => {
+    if (typeof window === "undefined") return DEFAULT_PREFS
+    return initializePrefs()
+  })
 
   // persist on change
   useEffect(() => {
