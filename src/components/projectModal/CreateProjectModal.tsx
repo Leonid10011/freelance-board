@@ -1,11 +1,9 @@
-import { Project, ProjectPriority, ProjectStatus } from "@/domain/project"
+import { Project, ProjectStatus } from "@/domain/project"
 import { createProject } from "@/repo/project.repo"
 import { CreateProjectSchema } from "@/validation/project.schema"
-import { format } from "date-fns"
-import { useState } from "react"
 import ProjectFormFields from "./ProjectFormFields"
 import ProjectModalShell from "./ProjectModalShell"
-import { TextFieldKey } from "./types"
+import { useProjectForm } from "./useProjectForm"
 
 type CreateProjectModalProps = {
   initialStatus: ProjectStatus
@@ -18,46 +16,26 @@ export default function CreateProjectModal({
   onClose,
   onSave,
 }: CreateProjectModalProps) {
-  const [formState, setFormState] = useState({
-    title: "",
-    client: "",
-    budget: "",
-    deadline: "",
-    status: initialStatus,
-    priority: "medium" as ProjectPriority,
+  const {
+    formState,
+    isSubmitting,
+    saveError,
+    handleDateChange,
+    handleProjectStatusChange,
+    handleProjectPriorityChange,
+    handleInputChange,
+    setSubmitting,
+    setError,
+  } = useProjectForm({
+    initialState: {
+      client: "",
+      title: "",
+      budget: "",
+      deadline: "",
+      status: initialStatus,
+      priority: "medium",
+    },
   })
-
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-
-  const [saveError, setSaveError] = useState<string | null>(null)
-
-  const handleDateChange = (newDate: Date) => {
-    setFormState((prev) => ({
-      ...prev,
-      deadline: format(newDate, "yyyy-MM-dd"), // Format as YYYY-MM-DD
-    }))
-  }
-
-  const handleProjectStatusChange = (newStatus: ProjectStatus) => {
-    setFormState((prev) => ({
-      ...prev,
-      status: newStatus,
-    }))
-  }
-
-  const handleProjectPriorityChange = (newPriority: ProjectPriority) => {
-    setFormState((prev) => ({
-      ...prev,
-      priority: newPriority,
-    }))
-  }
-
-  const handleInputChange = (field: TextFieldKey, value: string) => {
-    setFormState((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
-  }
 
   const handleSave = async () => {
     if (isSubmitting) {
@@ -65,9 +43,9 @@ export default function CreateProjectModal({
     }
 
     try {
-      setSaveError(null)
+      setError(null)
       // setSaveSuccess(null)  /* Temporarily disable success message to focus on error handling */
-      setIsSubmitting(true)
+      setSubmitting(true)
       const validatedData = CreateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
         console.error("Validation failed:", validatedData.error)
@@ -79,9 +57,9 @@ export default function CreateProjectModal({
       onClose(false)
     } catch (error) {
       console.error("Error creating project:", error)
-      setSaveError("Failed to create project. Please try again.")
+      setError("Failed to create project. Please try again.")
     } finally {
-      setIsSubmitting(false)
+      setSubmitting(false)
     }
   }
 
