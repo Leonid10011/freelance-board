@@ -28,6 +28,11 @@ export default function Board({ initialProjects }: BoardProps) {
   const [initialStatus, setInitialStatus] = useState<ProjectStatus>("inquiry")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
 
+  /* Debug States */
+  const [isProjectModalShellOpen, setIsProjectModalShellOpen] = useState(false)
+  const closeProjectModalShell = () => setIsProjectModalShellOpen(false)
+  /* End Debug States */
+
   const handleProjectStatusChange = (
     projectId: string,
     newStatus: ProjectStatus,
@@ -95,6 +100,13 @@ export default function Board({ initialProjects }: BoardProps) {
             toggleStatus={toggleStatus}
           />
         </div>
+        {/* DEBUG: Button to open ProjectModalShell */}
+        <button
+          className="bg-red-600 rounded p-4 w-full text-white hover:bg-red-700 hover:cursor-pointer mt-4"
+          onClick={() => setIsProjectModalShellOpen(true)}
+        >
+          DEBUG: TESTE PROJECT MODAL SHELL
+        </button>
       </header>
 
       <div className="flex h-[calc(100vh-4rem)] w-full overflow-x-auto justify-between">
@@ -121,16 +133,19 @@ export default function Board({ initialProjects }: BoardProps) {
         </aside>
       </div>
       {isProjectModalOpen && (
-        /*<ProjectModal
+        <ProjectModal
           onClose={setIsProjectModalOpen}
           initialStatus={initialStatus}
           onSave={handleAddProject}
-          */
+        />
+      )}
+      {isProjectModalShellOpen && (
         <ProjectModalShell
-          onClose={setIsProjectModalOpen}
+          onClose={setIsProjectModalShellOpen}
           onPrimaryAction={() => {}}
           isSubmitting={false}
           primaryActionLabel="Save"
+          errorMessage="This is an error message"
         />
       )}
     </div>
