@@ -10,11 +10,13 @@ import { updateProject } from "@/repo/project.repo"
 type UpdateProjectModalProps = {
   project: Project
   onUpdate: (updatedProject: Project) => void
+  onClose: (isOpen: boolean) => void
 }
 
 export default function UpdateProjectModal({
   project,
   onUpdate,
+  onClose,
 }: UpdateProjectModalProps) {
   const initialFormState: FormStateType = {
     title: project.title ?? "",
@@ -66,7 +68,7 @@ export default function UpdateProjectModal({
       isSubmitting={isSubmitting}
       onPrimaryAction={handleUpdate}
       primaryActionLabel="Update"
-      onClose={() => {}}
+      onClose={() => onClose(false)}
       errorMessage={saveError}
     >
       <ProjectFormFields

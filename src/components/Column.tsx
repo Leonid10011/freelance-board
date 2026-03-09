@@ -12,6 +12,7 @@ export default function Column({
   onProjectStatusChange,
   setModalOpen,
   setInitialStatus,
+  onEditProject,
 }: {
   projects: Project[]
   visibleCardFields: VisibleCardFields
@@ -21,6 +22,7 @@ export default function Column({
   onProjectStatusChange: (projectId: string, newStatus: ProjectStatus) => void
   setModalOpen: (isOpen: boolean) => void
   setInitialStatus: (status: ProjectStatus) => void
+  onEditProject: (project: Project) => void
 }) {
   const handleAddProject = () => {
     /*TODO: Open a modal to create a new project with status = project.status
@@ -55,6 +57,7 @@ export default function Column({
           projects.map((project) => {
             return (
               <ProjectCard
+                onEdit={onEditProject}
                 key={project.id}
                 project={project}
                 visibleCardFields={visibleCardFields}
