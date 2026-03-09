@@ -28,33 +28,33 @@ const DEFAULT_PREFS: BoardPreferences = {
   },
 }
 
-export function useBoardPreferences() {
-  const [prefs, setPrefs] = useState<BoardPreferences>(DEFAULT_PREFS)
+function initializePrefs(): BoardPreferences {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return DEFAULT_PREFS
 
-  // load once
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (!raw) return
+    const parsed = JSON.parse(raw) as Partial<BoardPreferences>
 
-      const parsed = JSON.parse(raw) as Partial<BoardPreferences>
-
-      setPrefs({
-        ...DEFAULT_PREFS,
-        ...parsed,
-        visibleStatuses: {
-          ...DEFAULT_PREFS.visibleStatuses,
-          ...(parsed.visibleStatuses ?? {}),
-        },
-        visibleCardFields: {
-          ...DEFAULT_PREFS.visibleCardFields,
-          ...(parsed.visibleCardFields ?? {}),
-        },
-      })
-    } catch {
-      // ignore malformed storage
+    return {
+      ...DEFAULT_PREFS,
+      ...parsed,
+      visibleStatuses: {
+        ...DEFAULT_PREFS.visibleStatuses,
+        ...(parsed.visibleStatuses ?? {}),
+      },
+      visibleCardFields: {
+        ...DEFAULT_PREFS.visibleCardFields,
+        ...(parsed.visibleCardFields ?? {}),
+      },
     }
-  }, [])
+  } catch {
+    // ignore malformed storage
+    return DEFAULT_PREFS
+  }
+}
+
+export function useBoardPreferences() {
+  const [prefs, setPrefs] = useState<BoardPreferences>(initializePrefs)
 
   // persist on change
   useEffect(() => {
