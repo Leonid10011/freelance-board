@@ -3,15 +3,20 @@ import FieldLabel from "./FieldLabel"
 import { Input } from "../ui/input"
 import DatePicker from "./DatePicker"
 import { SelectField } from "./SelectField"
-import { PROJECT_PRIORITIES, PROJECT_STATUSES } from "@/domain/project"
+import {
+  PROJECT_PRIORITIES,
+  PROJECT_STATUSES,
+  ProjectPriority,
+  ProjectStatus,
+} from "@/domain/project"
 import { FormStateType, TextFieldKey } from "./types"
 import { parse } from "date-fns"
 
 type ProjectFormFieldsProps = {
   formState: FormStateType
   onDeadlineChange: (newDate: Date) => void
-  onProjectStatusChange: (newStatus: string) => void
-  onProjectPriorityChange: (newPriority: string) => void
+  onProjectStatusChange: (newStatus: ProjectStatus) => void
+  onProjectPriorityChange: (newPriority: ProjectPriority) => void
   onTextFieldChange: (field: TextFieldKey, value: string) => void
 }
 export default function ProjectFormFields({
