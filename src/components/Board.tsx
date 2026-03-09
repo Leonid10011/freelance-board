@@ -7,7 +7,7 @@ import { useMemo, useState } from "react"
 import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import ProjectModal from "./ProjectModal"
-import ProjectModalShell from "./projectModal/ProjectModalShell"
+import CreateProjectModal from "./projectModal/CreateProjectModal"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -105,7 +105,7 @@ export default function Board({ initialProjects }: BoardProps) {
           className="bg-red-600 rounded p-4 w-full text-white hover:bg-red-700 hover:cursor-pointer mt-4"
           onClick={() => setIsProjectModalShellOpen(true)}
         >
-          DEBUG: TESTE PROJECT MODAL SHELL
+          DEBUG: TESTE CREATE PROJECT MODAL
         </button>
       </header>
 
@@ -134,18 +134,16 @@ export default function Board({ initialProjects }: BoardProps) {
       </div>
       {isProjectModalOpen && (
         <ProjectModal
-          onClose={setIsProjectModalOpen}
+          onClose={() => setIsProjectModalOpen(false)}
           initialStatus={initialStatus}
           onSave={handleAddProject}
         />
       )}
       {isProjectModalShellOpen && (
-        <ProjectModalShell
+        <CreateProjectModal
           onClose={closeProjectModalShell}
-          onPrimaryAction={() => {}}
-          isSubmitting={false}
-          primaryActionLabel="Save"
-          errorMessage="This is an error message"
+          initialStatus={initialStatus}
+          onSave={handleAddProject}
         />
       )}
     </div>
