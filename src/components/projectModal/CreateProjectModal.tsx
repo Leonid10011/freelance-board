@@ -1,9 +1,11 @@
 import { Project, ProjectStatus } from "@/domain/project"
-import { createProject, ProjectRepoError } from "@/repo/project.repo"
+import { ProjectRepoError } from "@/repo/project.repo"
 import { CreateProjectSchema } from "@/validation/project.schema"
 import ProjectFormFields from "./ProjectFormFields"
 import ProjectModalShell from "./ProjectModalShell"
 import { useProjectForm } from "./useProjectForm"
+import { useAppMode } from "@/lib/app-mode"
+import { createProjectGateway } from "@/repo/project.gateway"
 
 type CreateProjectModalProps = {
   initialStatus: ProjectStatus
@@ -16,6 +18,9 @@ export default function CreateProjectModal({
   onClose,
   onSave,
 }: CreateProjectModalProps) {
+  const mode = useAppMode()
+  const porjectGateway = createProjectGateway(mode)
+
   const {
     formState,
     isSubmitting,
@@ -51,7 +56,7 @@ export default function CreateProjectModal({
         console.error("Validation failed:", validatedData.error)
         return
       }
-      const result = await createProject(validatedData.data)
+      const result = await porjectGateway.create(validatedData.data)
       // setSaveSuccess("Project created successfully!") /* Temporarily disable success message to focus on error handling */
       onSave(result)
       onClose(false)

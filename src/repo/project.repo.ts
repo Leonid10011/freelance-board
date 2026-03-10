@@ -31,6 +31,7 @@ export class ProjectRepoError extends Error {
   }
 }
 
+/* Repository functions for accessing and manipulating project data in the database. */
 export async function getProjects(): Promise<Project[]> {
   const { data, error } = await supabase.from("projects").select("*").limit(10)
   if (error) {

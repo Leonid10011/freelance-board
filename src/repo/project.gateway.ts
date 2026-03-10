@@ -17,6 +17,7 @@ const liveGateway: ProjectGateway = {
 
 const demoGateway: ProjectGateway = {
   async create(data) {
+    console.log("Creating project in demo mode with data:", data)
     const project: Project = {
       id: crypto.randomUUID(),
       client: data.client,
@@ -38,6 +39,7 @@ const demoGateway: ProjectGateway = {
   },
 
   async update(id, data) {
+    console.log(`Updating project ${id} in demo mode with data:`, data)
     const raw = localStorage.getItem("demo-projects")
     const list: Project[] = raw ? JSON.parse(raw) : []
     const next = list.map((p) =>

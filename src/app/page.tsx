@@ -14,14 +14,14 @@ export default function RecruiterCta() {
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           type="button"
-          href="/board"
+          href="/demo"
           className="rounded-md bg-black px-4 py-2 text-white"
         >
           Demo starten
         </Link>
         <Link
           type="button"
-          href="/login-magic-link"
+          href="/board"
           className="rounded-md border px-4 py-2"
         >
           Magic Link anfordern
