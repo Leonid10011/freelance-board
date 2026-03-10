@@ -24,7 +24,7 @@ export default function RecruiterCta() {
           href="/board"
           className="rounded-md border px-4 py-2"
         >
-          Magic Link anfordern
+          Magic Link anfordern (TODO)
         </Link>
       </div>
     </section>
