@@ -101,18 +101,17 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-col overflow-hidden bg-board rounded-xl">
-      <header className=" px-6 py-4">
-        <div className="flex flex-col items-start justify-between">
-          <StatusFilterBar
-            statuses={STATUS_ORDER}
-            visibleStatuses={visibleStatuses}
-            toggleStatus={toggleStatus}
-          />
-        </div>
-      </header>
-
-      <div className="flex min-h-0 flex-1 w-full overflow-hidden justify-between">
+    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-row overflow-hidden bg-board rounded-xl">
+      <div className="flex flex-col min-h-0 flex-1 w-full overflow-hidden justify-between">
+        <header className=" px-6 py-4">
+          <div className="flex flex-col items-start justify-between">
+            <StatusFilterBar
+              statuses={STATUS_ORDER}
+              visibleStatuses={visibleStatuses}
+              toggleStatus={toggleStatus}
+            />
+          </div>
+        </header>
         <main className="flex min-h-0 flex-row gap-4 overflow-x-auto overflow-y-hidden p-6">
           {visibleStatuses.map((status) => (
             <Column
@@ -129,13 +128,13 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           ))}
         </main>
-        <aside className="w-[180px] shrink-0 border-l shadow-[inset_4px_0_12px_rgba(15,23,42,0.04)]">
-          <ViewSidebar
-            visibleCardFields={visibleCardFields}
-            toggleCardField={toggleCardField}
-          />
-        </aside>
       </div>
+      <aside className="w-[180px] shrink-0 border-l shadow-[inset_4px_0_12px_rgba(15,23,42,0.04)] pt-6">
+        <ViewSidebar
+          visibleCardFields={visibleCardFields}
+          toggleCardField={toggleCardField}
+        />
+      </aside>
       {isProjectModalShellOpen && (
         <CreateProjectModal
           onClose={closeProjectModalShell}

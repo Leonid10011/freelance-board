@@ -1,7 +1,7 @@
 import { ProjectCardField } from "./board/types"
 import { Button } from "./ui/button"
 import { Label } from "./ui/label"
-import { EyeClosedIcon, EyeIcon } from "lucide-react"
+import { EyeClosedIcon, EyeIcon, PanelRightClose } from "lucide-react"
 
 type ViewSidebarProps = {
   visibleCardFields: Record<ProjectCardField, boolean>
@@ -23,7 +23,10 @@ export default function ViewSidebar({
 
   return (
     <div className="flex flex-col w-full p-4">
-      <h2 className="text-md font-semibold mb-4">Card Fields</h2>
+      <div className="flex flex-row items-center justify-between mb-8">
+        <h2 className="text-md font-semibold">Card Fields</h2>
+        <PanelRightClose className="w-6 h-6 text-muted hover:opacity-70 hover:cursor-pointer" />
+      </div>
       <div className="flex text-sm justify-between mb-8">
         <Label className="text-sm text-muted">
           Visible:{" "}
