@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import ProjectModalShell from "./ProjectModalShell"
 import ProjectFormFields from "./ProjectFormFields"
 import { UpdateProjectSchema } from "@/validation/project.schema"
-import { updateProject } from "@/repo/project.repo"
+import { ProjectRepoError, updateProject } from "@/repo/project.repo"
 
 type UpdateProjectModalProps = {
   project: Project
@@ -50,15 +50,26 @@ export default function UpdateProjectModal({
       const validatedData = UpdateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
         console.error("Validation failed:", validatedData.error)
+        setError("Invalid data. Please check your input and try again.")
+        setSubmitting(false)
         return
       }
       const result = await updateProject(project.id, validatedData.data)
       // setSaveSuccess("Project updated successfully!") /* Temporarily disable success message to focus on error handling */
       onUpdate(result)
       onClose(false)
-    } catch (error) {
-      console.error("Error updating project:", error)
-      setError("Failed to update project. Please try again.")
+    } catch (error: unknown) {
+      if (error instanceof ProjectRepoError) {
+        if (error.code === "AUTH_REQUIRED") {
+          setError("You must be logged in to update a project.")
+        } else if (error.code === "VALIDATION") {
+          setError("Invalid data. Please check your input and try again.")
+        } else {
+          setError("Failed to update project. Please try again.")
+        }
+      } else {
+        setError("An unexpected error occurred. Please try again.")
+      }
     } finally {
       setSubmitting(false)
     }

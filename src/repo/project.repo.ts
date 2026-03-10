@@ -13,22 +13,22 @@ import {
 
 const supabase = createSupabaseBrowserClient()
 
-const mockProjects: Project[] = [
-  {
-    id: "1",
-    title: "Build a website",
-    client: "Acme Corp",
-    budget: 5000,
-    deadline: new Date("2024-12-31"),
-    status: "active",
-    priority: "high",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-]
+export type ProjectRepoErrorCode =
+  | "AUTH_REQUIRED"
+  | "FORBIDDEN"
+  | "NOT_FOUND"
+  | "VALIDATION"
+  | "UNKNOWN"
 
-export async function listProjects(): Promise<Project[]> {
-  return mockProjects
+export class ProjectRepoError extends Error {
+  constructor(
+    public code: ProjectRepoErrorCode,
+    message: string,
+    public cause?: unknown,
+  ) {
+    super(message)
+    this.name = "ProjectRepoError"
+  }
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -55,11 +55,14 @@ export async function createProject(
 ): Promise<Project> {
   const { data: authData, error: authError } = await supabase.auth.getSession()
   if (authError || !authData.session) {
-    console.error("Error getting auth session:", authError)
-    throw new Error(authError?.message || "Failed to get auth session")
+    throw new ProjectRepoError(
+      "AUTH_REQUIRED",
+      authError?.message || "Authentication required",
+      authError,
+    )
   }
 
-  const { data, error } = await supabase
+  const { data, error, status } = await supabase
     .from("projects")
     .insert({
       title: input.title,
@@ -76,8 +79,15 @@ export async function createProject(
     .single()
 
   if (error) {
-    console.error("Error inserting project:", error)
-    throw new Error(error.message)
+    // RLS / permission denied
+    if (status === 403 || error.code === "42501") {
+      throw new ProjectRepoError(
+        "FORBIDDEN",
+        "No permission to update project",
+        error,
+      )
+    }
+    throw new ProjectRepoError("UNKNOWN", error.message, error)
   }
 
   return projectRowToDomain(data)
@@ -90,33 +100,58 @@ export async function updateProject(
   _input: UpdateProjectValidated,
 ): Promise<Project> {
   const { data: authData, error: authError } = await supabase.auth.getSession()
-  if (authError || !authData.session) {
-    console.error("Error getting auth session:", authError)
-    throw new Error(authError?.message || "Failed to get auth session")
-  } else {
-    const patch = toProjectUpdatePatch(_input)
-    console.log("Generated patch for update:", patch)
-    const { data } = await supabase
-      .from("projects")
-      .update(patch)
-      .eq("id", _id)
-      .select()
-      .single()
 
-    return projectRowToDomain(data)
+  if (authError || !authData.session) {
+    throw new ProjectRepoError(
+      "AUTH_REQUIRED",
+      authError?.message || "Authentication required",
+      authError,
+    )
   }
+
+  const patch = toProjectUpdatePatch(_input)
+
+  const { data, error, status } = await supabase
+    .from("projects")
+    .update(patch)
+    .eq("id", _id)
+    .select()
+    .single()
+
+  if (error) {
+    // RLS / permission denied
+    if (status === 403 || error.code === "42501") {
+      throw new ProjectRepoError(
+        "FORBIDDEN",
+        "No permission to update project",
+        error,
+      )
+    }
+
+    // Not found / no row returned by single()
+    if (status === 404 || status === 406 || error.code === "PGRST116") {
+      throw new ProjectRepoError("NOT_FOUND", "Project not found", error)
+    }
+
+    throw new ProjectRepoError("UNKNOWN", error.message, error)
+  }
+
+  return projectRowToDomain(data)
 }
 
 export async function deleteProject(_id: string): Promise<void> {
   const { data: authData, error: authError } = await supabase.auth.getSession()
   if (authError || !authData.session) {
-    console.error("Error getting auth session:", authError)
-    throw new Error(authError?.message || "Failed to get auth session")
+    throw new ProjectRepoError(
+      "AUTH_REQUIRED",
+      authError?.message || "Failed to get auth session",
+      authError,
+    )
   } else {
     const { error } = await supabase.from("projects").delete().eq("id", _id)
     if (error) {
       console.error("Error deleting project:", error)
-      throw new Error(error.message)
+      throw new ProjectRepoError("UNKNOWN", error.message, error)
     }
   }
 }
