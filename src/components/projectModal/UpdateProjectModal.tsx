@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import ProjectModalShell from "./ProjectModalShell"
 import ProjectFormFields from "./ProjectFormFields"
 import { UpdateProjectSchema } from "@/validation/project.schema"
-import { ProjectRepoError, updateProject } from "@/repo/project.repo"
+import { ProjectRepoError } from "@/repo/project.repo"
 import { useAppMode } from "@/lib/app-mode"
 import { createProjectGateway } from "@/repo/project.gateway"
 

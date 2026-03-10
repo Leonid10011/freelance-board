@@ -105,8 +105,8 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex h-full min-h-0 w-full min-h-[32rem] flex-row overflow-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none">
-      <div className="flex flex-col min-h-0 flex-1 w-full overflow-hidden justify-between">
+    <div className="flex w-full min-h-[32rem] flex-row rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none ">
+      <div className="flex w-full flex-1 flex-col">
         <header className="px-6 py-4 max-md:px-3 max-md:py-3">
           <div className="flex flex-col items-start justify-between">
             <StatusFilterBar
@@ -116,7 +116,7 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           </div>
         </header>
-        <main className="flex min-h-0 flex-row gap-4 overflow-x-auto overflow-y-hidden h-full p-6 max-md:gap-3 max-md:p-3">
+        <main className="flex flex-row gap-4 overflow-x-auto p-6 max-md:flex-col max-md:gap-3 max-md:p-3 ">
           {visibleStatuses.map((status) => (
             <Column
               onEditProject={handleEditProject}
@@ -134,8 +134,8 @@ export default function Board({ initialProjects }: BoardProps) {
         </main>
       </div>
       <div
-        className={`relative shrink-0 overflow-hidden transition-[width] duration-300 ease-out max-md:hidden ${
-          isSideBarOpen ? "w-[220px]" : "w-12"
+        className={`relative shrink-0 overflow-hidden transition-[width] duration-300 ease-out  ${
+          isSideBarOpen ? "w-[220px]" : "w-12 max-md:w-10"
         }`}
       >
         {!isSideBarOpen && (

@@ -107,6 +107,17 @@
   }
 }
 
+@layer utilities {
+  .scrollbar-hidden {
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
 html,
 body {
   height: 100%;
