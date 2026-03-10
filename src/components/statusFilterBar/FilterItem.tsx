@@ -17,7 +17,7 @@ export default function FilterItem({
 
   return (
     <div
-      className={`cursor-pointer ${isActive ? "border-green-500 border-b-2 pb-1" : "text-gray-500"}`}
+      className={`cursor-pointer ${isActive ? "border-accent border-b-2 pb-1" : "text-gray-500"}`}
       onClick={handleClick}
     >
       {label}

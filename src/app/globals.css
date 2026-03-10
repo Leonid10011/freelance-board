@@ -13,7 +13,7 @@
   --muted: oklch(0.967 0.003 264.542); /* gray-500 */
   --border: oklch(0.928 0.006 264.531); /* gray-200 */
 
-  --accent: oklch(0.967 0.003 264.542); /* indigo */
+  --accent: #10b981;
   --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.028 261.692);
