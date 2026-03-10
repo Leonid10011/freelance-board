@@ -8,7 +8,7 @@ import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import CreateProjectModal from "./projectModal/CreateProjectModal"
 import UpdateProjectModal from "./projectModal/UpdateProjectModal"
-import { PanelLeftOpen, PanelRightOpen } from "lucide-react"
+import { PanelRightOpen } from "lucide-react"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -105,9 +105,9 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-row overflow-hidden bg-board rounded-xl">
+    <div className="flex h-full min-h-0 w-full min-h-[32rem] flex-row overflow-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none">
       <div className="flex flex-col min-h-0 flex-1 w-full overflow-hidden justify-between">
-        <header className=" px-6 py-4">
+        <header className="px-6 py-4 max-md:px-3 max-md:py-3">
           <div className="flex flex-col items-start justify-between">
             <StatusFilterBar
               statuses={STATUS_ORDER}
@@ -116,7 +116,7 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           </div>
         </header>
-        <main className="flex min-h-0 flex-row gap-4 overflow-x-auto overflow-y-hidden p-6">
+        <main className="flex min-h-0 flex-row gap-4 overflow-x-auto overflow-y-hidden h-full p-6 max-md:gap-3 max-md:p-3">
           {visibleStatuses.map((status) => (
             <Column
               onEditProject={handleEditProject}
@@ -134,7 +134,7 @@ export default function Board({ initialProjects }: BoardProps) {
         </main>
       </div>
       <div
-        className={`relative shrink-0 overflow-hidden transition-[width] duration-300 ease-out ${
+        className={`relative shrink-0 overflow-hidden transition-[width] duration-300 ease-out max-md:hidden ${
           isSideBarOpen ? "w-[220px]" : "w-12"
         }`}
       >
