@@ -9,7 +9,8 @@
   --surface: 237 239 242;
   --board: #edeff2; /* board */
   --card: #fafbfc; /* cards */
-  --text: #111827; /* slate-900 */
+  --meta: rgba(38, 38, 38, 0.8);
+  --text: #262626;
   --muted: oklch(0.967 0.003 264.542); /* gray-500 */
   --border: oklch(0.928 0.006 264.531); /* gray-200 */
 
@@ -50,6 +51,7 @@
   --color-board: var(--board);
   --color-column: var(--bg);
   --color-card: var(--card);
+  --color-meta: var(--meta);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);

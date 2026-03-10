@@ -6,7 +6,7 @@ export default function FieldItem({
   text?: string
 }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4 text-text">
       {icon}
       {text ? text : "N/A"}
     </div>

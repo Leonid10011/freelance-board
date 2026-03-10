@@ -6,6 +6,7 @@ import { ProjectStatus } from "@/domain/project"
 import { VisibleCardFields } from "./board/types"
 import { format } from "date-fns"
 import { CalendarClock, Euro, Flag, User } from "lucide-react"
+import FieldItem from "./projectCard/FieldItem"
 
 type ProjectCardProps = {
   project: Project
@@ -71,7 +72,7 @@ export default function ProjectCard({
     >
       {/*Project Header*/}
       <div className="flex flex-row justify-between items-center">
-        <h3 className="text-xl font-semibold">{project.title}</h3>
+        <h3 className="text-xl font-semibold text-text">{project.title}</h3>
         {/* Status Badge */}
 
         <div
@@ -106,26 +107,39 @@ export default function ProjectCard({
       {/*Project Details - only show fields that are enabled in visibleCardFields*/}
       <div className="flex flex-col gap-4 p-0">
         {visibleCardFields.client && (
-          <div className="flex items-center gap-2">
-            <User /> {project.client ?? "N/A"}
-          </div>
+          <FieldItem
+            icon={<User className="text-meta" />}
+            text={project.client}
+          />
         )}
         {visibleCardFields.budget && (
-          <div className="flex items-center gap-2">
-            <Euro /> {project.budget ?? "N/A"}
-          </div>
+          <FieldItem
+            icon={<Euro className="text-meta" />}
+            text={
+              project.budget && Number(project.budget) !== undefined
+                ? `${Number(project.budget).toFixed(2)} €`
+                : undefined
+            }
+          />
         )}
         {visibleCardFields.deadline && (
-          <div className="flex items-center gap-2">
-            <CalendarClock />
-            {project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"}
-          </div>
+          <FieldItem
+            icon={<CalendarClock className="text-meta" />}
+            text={
+              project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"
+            }
+          />
         )}
         {visibleCardFields.priority && (
-          <div className="flex items-center gap-4">
-            <Flag />
-            {project.priority ?? "N/A"}
-          </div>
+          <FieldItem
+            icon={<Flag className="text-meta" />}
+            text={
+              project.priority
+                ? project.priority.slice(-1).toLocaleUpperCase() +
+                  project.priority.slice(1)
+                : "N/A"
+            }
+          />
         )}
       </div>
     </div>
