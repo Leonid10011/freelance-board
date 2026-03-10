@@ -101,10 +101,9 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <header className="border-b px-6 py-4 height-16">
+    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-col overflow-hidden bg-board rounded-xl border">
+      <header className="border-b px-6 py-4">
         <div className="flex flex-col items-start justify-between">
-          <h1 className="text-2xl font-bold">Freelance Board</h1>
           <StatusFilterBar
             statuses={STATUS_ORDER}
             visibleStatuses={visibleStatuses}
@@ -113,8 +112,8 @@ export default function Board({ initialProjects }: BoardProps) {
         </div>
       </header>
 
-      <div className="flex h-[calc(100vh-4rem)] w-full overflow-x-auto justify-between">
-        <main className="flex flex-row overflow-x-auto overflow-y-hidden p-6 gap-4">
+      <div className="flex min-h-0 flex-1 w-full overflow-hidden justify-between">
+        <main className="flex min-h-0 flex-row gap-4 overflow-x-auto overflow-y-hidden p-6">
           {visibleStatuses.map((status) => (
             <Column
               onEditProject={handleEditProject}

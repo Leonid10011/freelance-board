@@ -5,10 +5,11 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --bg: 243 244 246; /* page */
-  --surface: 237 239 242; /* board */
-  --card: oklch(1 0 0); /* cards */
-  --text: 17 24 39; /* slate-900 */
+  --bg: #f3f4f6; /* page */
+  --surface: 237 239 242;
+  --board: #edeff2; /* board */
+  --card: #fafbfc; /* cards */
+  --text: #111827; /* slate-900 */
   --muted: oklch(0.967 0.003 264.542); /* gray-500 */
   --border: oklch(0.928 0.006 264.531); /* gray-200 */
 
@@ -45,7 +46,10 @@
 
 @theme inline {
   --color-background: var(--bg);
-  --color-foreground: var(--surface);
+  --color-foreground: var(--text);
+  --color-board: var(--board);
+  --color-column: var(--bg);
+  --color-card: var(--card);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -101,18 +105,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: 10 10 10;
-    --surface: 24 24 24;
-    --card: 30 30 30;
-    --text: 255 255 255;
-    --muted: 168 168 168;
-    --border: 48 48 48;
-    --accent: 96 77 255;
-  }
-}
-
 html,
 body {
   height: 100%;
@@ -124,6 +116,12 @@ body {
 }
 
 .dark {
+  --bg: #0a0a0a;
+  --surface: 24 24 24;
+  --text: #ffffff;
+  --muted: 168 168 168;
+  --border: 48 48 48;
+  --accent: 96 77 255;
   --background: oklch(0.13 0.028 261.692);
   --foreground: oklch(0.985 0.002 247.839);
   --card: oklch(0.21 0.034 264.665);

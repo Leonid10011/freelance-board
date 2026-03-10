@@ -60,7 +60,7 @@ export default function ProjectCard({
 
   return (
     <div
-      className="flex flex-col bg-white rounded-2xl gap-6 py-4 px-6 hover:shadow-lg hover:bg-gray-100 hover:opacity-90 hover:cursor-pointer"
+      className="flex flex-col bg-card rounded-2xl gap-6 py-4 px-6 hover:shadow-lg hover:bg-gray-100 hover:opacity-90 hover:cursor-pointer"
       onClick={() => onEdit(project)}
     >
       {/*Project Header*/}

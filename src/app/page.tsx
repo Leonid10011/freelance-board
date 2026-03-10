@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export default function RecruiterCta() {
   return (
-    <section className=" rounded-xl border p-4 md:p-6">
+    <section className="rounded-xl border p-4 md:p-6">
       <h2 className="text-lg font-semibold">Für Recruiter</h2>
       <p className="mt-1 text-sm text-gray-600">
         Ohne Registrierung testen oder direkt sicheren Zugang per Magic Link
