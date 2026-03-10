@@ -22,24 +22,29 @@ export default function ViewSidebar({
   }
 
   return (
-    <div className="flex flex-col">
-      <h2 className="text-lg font-semibold mb-4">View Card Fields</h2>
-      <div className="flex justify-between mb-8">
-        <Label>
+    <div className="flex flex-col w-full p-4">
+      <h2 className="text-md font-semibold mb-4">Card Fields</h2>
+      <div className="flex text-sm justify-between mb-8">
+        <Label className="text-sm text-muted">
           Visible:{" "}
           {
             Object.values(visibleCardFields).filter((value) => value === true)
               .length
           }
         </Label>
-        <Button onClick={handleReset}>Reset</Button>
+        <Button
+          onClick={handleReset}
+          className="p-0 pr-2 bg-transparent text-muted hover:bg-transparent hover:text-accent focus:bg-transparent focus:text-accent border-none hover:cursor-pointer"
+        >
+          Reset
+        </Button>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-8">
         {Object.entries(visibleCardFields).map(([field, isVisible]) => (
           <div
             key={field}
-            className={`cursor-pointer flex items-center gap-2 ${
-              isVisible ? "" : "text-gray-500"
+            className={`cursor-pointer flex text-text font-regular items-center gap-2 ${
+              isVisible ? "" : "text-muted"
             }`}
             onClick={() => toggleCardField(field as ProjectCardField)}
           >

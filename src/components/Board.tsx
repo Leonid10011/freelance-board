@@ -101,8 +101,8 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-col overflow-hidden bg-board rounded-xl border">
-      <header className="border-b px-6 py-4">
+    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-col overflow-hidden bg-board rounded-xl">
+      <header className=" px-6 py-4">
         <div className="flex flex-col items-start justify-between">
           <StatusFilterBar
             statuses={STATUS_ORDER}
@@ -129,7 +129,7 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           ))}
         </main>
-        <aside className="w-80 shrink-0 border-l p-6">
+        <aside className="w-[180px] shrink-0 border-l shadow-[inset_4px_0_12px_rgba(15,23,42,0.04)]">
           <ViewSidebar
             visibleCardFields={visibleCardFields}
             toggleCardField={toggleCardField}
