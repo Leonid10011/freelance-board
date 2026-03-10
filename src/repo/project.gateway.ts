@@ -29,21 +29,44 @@ const demoGateway: ProjectGateway = {
       updatedAt: new Date(),
     }
 
+    const raw = localStorage.getItem("demo-projects")
+    const projects: Project[] = raw ? JSON.parse(raw) : []
+    projects.push(project)
+    localStorage.setItem("demo-projects", JSON.stringify(projects))
+
     return project
   },
+
   async update(id, data) {
-    const project: Project = {
-      id,
-      client: data.client || "Demo Client",
-      budget: Number(data.budget) || 0,
-      deadline: data.deadline ? new Date(data.deadline) : undefined,
-      status: data.status || "waiting",
-      priority: data.priority || "medium",
-      title: data.title || "Demo Project",
-      createdAt: new Date(),
-      updatedAt: new Date(),
+    const raw = localStorage.getItem("demo-projects")
+    const list: Project[] = raw ? JSON.parse(raw) : []
+    const next = list.map((p) =>
+      p.id === id
+        ? {
+            ...p,
+            ...data,
+            title: data.title || p.title,
+            client: data.client !== undefined ? data.client : p.client,
+            budget: data.budget !== undefined ? Number(data.budget) : p.budget,
+            deadline:
+              data.deadline !== undefined
+                ? data.deadline
+                  ? new Date(data.deadline)
+                  : p.deadline
+                : undefined,
+            status: data.status || p.status,
+            priority: data.priority || p.priority,
+            updatedAt: new Date(),
+          }
+        : p,
+    )
+    localStorage.setItem("demo-projects", JSON.stringify(next))
+    const updated = next.find((p) => p.id === id)
+    if (!updated) {
+      throw new Error("Project not found")
     }
-    return project
+
+    return updated
   },
 }
 
