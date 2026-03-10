@@ -1,5 +1,5 @@
 import { Project, ProjectStatus } from "@/domain/project"
-import { createProject } from "@/repo/project.repo"
+import { createProject, ProjectRepoError } from "@/repo/project.repo"
 import { CreateProjectSchema } from "@/validation/project.schema"
 import ProjectFormFields from "./ProjectFormFields"
 import ProjectModalShell from "./ProjectModalShell"
@@ -55,9 +55,18 @@ export default function CreateProjectModal({
       // setSaveSuccess("Project created successfully!") /* Temporarily disable success message to focus on error handling */
       onSave(result)
       onClose(false)
-    } catch (error) {
-      console.error("Error creating project:", error)
-      setError("Failed to create project. Please try again.")
+    } catch (error: unknown) {
+      if (error instanceof ProjectRepoError) {
+        if (error.code === "AUTH_REQUIRED") {
+          setError("You must be logged in to update a project.")
+        } else if (error.code === "VALIDATION") {
+          setError("Invalid data. Please check your input and try again.")
+        } else {
+          setError("Failed to update project. Please try again.")
+        }
+      } else {
+        setError("An unexpected error occurred. Please try again.")
+      }
     } finally {
       setSubmitting(false)
     }
