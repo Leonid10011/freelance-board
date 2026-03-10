@@ -58,11 +58,11 @@ export default function CreateProjectModal({
     } catch (error: unknown) {
       if (error instanceof ProjectRepoError) {
         if (error.code === "AUTH_REQUIRED") {
-          setError("You must be logged in to update a project.")
+          setError("You must be logged in to create a project.")
         } else if (error.code === "VALIDATION") {
           setError("Invalid data. Please check your input and try again.")
         } else {
-          setError("Failed to update project. Please try again.")
+          setError("Failed to create project. Please try again.")
         }
       } else {
         setError("An unexpected error occurred. Please try again.")
