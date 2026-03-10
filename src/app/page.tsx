@@ -1,14 +1,32 @@
-import Board from "@/components/Board"
-import { Project } from "@/domain/project"
-import { getProjects } from "@/repo/project.repo"
+"use client"
 
-export default async function Home() {
-  /* Load inital data and preferences here, then pass them down to Board */
-  const initialProjects: Project[] = await getProjects()
+import Link from "next/link"
 
+export default function RecruiterCta() {
   return (
-    <>
-      <Board initialProjects={initialProjects} />
-    </>
+    <section className=" rounded-xl border p-4 md:p-6">
+      <h2 className="text-lg font-semibold">Für Recruiter</h2>
+      <p className="mt-1 text-sm text-gray-600">
+        Ohne Registrierung testen oder direkt sicheren Zugang per Magic Link
+        erhalten.
+      </p>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Link
+          type="button"
+          href="/board"
+          className="rounded-md bg-black px-4 py-2 text-white"
+        >
+          Demo starten
+        </Link>
+        <Link
+          type="button"
+          href="/login-magic-link"
+          className="rounded-md border px-4 py-2"
+        >
+          Magic Link anfordern
+        </Link>
+      </div>
+    </section>
   )
 }

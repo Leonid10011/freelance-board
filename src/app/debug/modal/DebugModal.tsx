@@ -11,6 +11,12 @@ export default function DebugModal({ p }: { p: Project[] }) {
     null,
   )
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const handleModalOpen = () => {
+    setIsModalOpen(false)
+  }
+
   const projectToEdit = useMemo(
     () => projects.find((project) => project.id === projectToEditId) ?? null,
     [projects, projectToEditId],
@@ -49,7 +55,10 @@ export default function DebugModal({ p }: { p: Project[] }) {
             </div>
             <button
               className="px-3 py-2 rounded-md bg-green-600 text-white hover:bg-green-700"
-              onClick={() => setProjectToEditId(project.id)}
+              onClick={() => {
+                setProjectToEditId(project.id)
+                setIsModalOpen(true)
+              }}
             >
               Edit Project
             </button>
@@ -64,8 +73,12 @@ export default function DebugModal({ p }: { p: Project[] }) {
         </div>
       )}
 
-      {projectToEdit && (
-        <UpdateProjectModal project={projectToEdit} onUpdate={handleUpdate} />
+      {isModalOpen && projectToEdit && (
+        <UpdateProjectModal
+          project={projectToEdit}
+          onUpdate={handleUpdate}
+          onClose={handleModalOpen}
+        />
       )}
     </main>
   )
