@@ -5,6 +5,7 @@ import { Project } from "@/domain/project"
 import { ProjectStatus } from "@/domain/project"
 import { VisibleCardFields } from "./board/types"
 import { format } from "date-fns"
+import { CalendarClock, Euro, Flag, User } from "lucide-react"
 
 type ProjectCardProps = {
   project: Project
@@ -105,19 +106,26 @@ export default function ProjectCard({
       {/*Project Details - only show fields that are enabled in visibleCardFields*/}
       <div className="flex flex-col gap-4 p-0">
         {visibleCardFields.client && (
-          <div>Client: {project.client ?? "N/A"}</div>
+          <div className="flex items-center gap-2">
+            <User /> {project.client ?? "N/A"}
+          </div>
         )}
         {visibleCardFields.budget && (
-          <div>Budget: {project.budget ?? "N/A"}</div>
+          <div className="flex items-center gap-2">
+            <Euro /> {project.budget ?? "N/A"}
+          </div>
         )}
         {visibleCardFields.deadline && (
-          <div>
-            Deadline:{" "}
+          <div className="flex items-center gap-2">
+            <CalendarClock />
             {project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"}
           </div>
         )}
         {visibleCardFields.priority && (
-          <div>Priority: {project.priority ?? "N/A"}</div>
+          <div className="flex items-center gap-4">
+            <Flag />
+            {project.priority ?? "N/A"}
+          </div>
         )}
       </div>
     </div>
