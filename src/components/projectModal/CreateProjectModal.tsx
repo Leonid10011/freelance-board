@@ -1,9 +1,11 @@
 import { Project, ProjectStatus } from "@/domain/project"
-import { createProject } from "@/repo/project.repo"
+import { ProjectRepoError } from "@/repo/project.repo"
 import { CreateProjectSchema } from "@/validation/project.schema"
 import ProjectFormFields from "./ProjectFormFields"
 import ProjectModalShell from "./ProjectModalShell"
 import { useProjectForm } from "./useProjectForm"
+import { useAppMode } from "@/lib/app-mode"
+import { createProjectGateway } from "@/repo/project.gateway"
 
 type CreateProjectModalProps = {
   initialStatus: ProjectStatus
@@ -16,6 +18,9 @@ export default function CreateProjectModal({
   onClose,
   onSave,
 }: CreateProjectModalProps) {
+  const mode = useAppMode()
+  const porjectGateway = createProjectGateway(mode)
+
   const {
     formState,
     isSubmitting,
@@ -51,13 +56,22 @@ export default function CreateProjectModal({
         console.error("Validation failed:", validatedData.error)
         return
       }
-      const result = await createProject(validatedData.data)
+      const result = await porjectGateway.create(validatedData.data)
       // setSaveSuccess("Project created successfully!") /* Temporarily disable success message to focus on error handling */
       onSave(result)
       onClose(false)
-    } catch (error) {
-      console.error("Error creating project:", error)
-      setError("Failed to create project. Please try again.")
+    } catch (error: unknown) {
+      if (error instanceof ProjectRepoError) {
+        if (error.code === "AUTH_REQUIRED") {
+          setError("You must be logged in to create a project.")
+        } else if (error.code === "VALIDATION") {
+          setError("Invalid data. Please check your input and try again.")
+        } else {
+          setError("Failed to create project. Please try again.")
+        }
+      } else {
+        setError("An unexpected error occurred. Please try again.")
+      }
     } finally {
       setSubmitting(false)
     }
