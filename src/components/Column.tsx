@@ -48,7 +48,7 @@ export default function Column({
         </div>
         {/* Add Button */}
         <button onClick={handleAddProject}>
-          <CirclePlus className="w-6 h-6 text-accent cursor-pointer" />
+          <CirclePlus className="w-6 h-6 text-accent cursor-pointer hover:opacity-70" />
         </button>
       </div>
       {/* Projects */}
