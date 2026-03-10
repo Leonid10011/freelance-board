@@ -8,6 +8,7 @@ import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import CreateProjectModal from "./projectModal/CreateProjectModal"
 import UpdateProjectModal from "./projectModal/UpdateProjectModal"
+import { PanelLeftOpen, PanelRightOpen } from "lucide-react"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -29,6 +30,9 @@ export default function Board({ initialProjects }: BoardProps) {
   const [initialStatus, setInitialStatus] = useState<ProjectStatus>("inquiry")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [projectToEdit, setProjectToEdit] = useState<Project>()
+  const [isSideBarOpen, setIsSidebarOpen] = useState(true)
+
+  const toggleSidebar = () => setIsSidebarOpen((current) => !current)
 
   const closeProjectModalShell = () => setIsProjectModalShellOpen(false)
   const closeEditProjectModal = () => setIsEditProjectModalOpen(false)
@@ -129,12 +133,34 @@ export default function Board({ initialProjects }: BoardProps) {
           ))}
         </main>
       </div>
-      <aside className="w-[180px] shrink-0 border-l shadow-[inset_4px_0_12px_rgba(15,23,42,0.04)] pt-6">
-        <ViewSidebar
-          visibleCardFields={visibleCardFields}
-          toggleCardField={toggleCardField}
-        />
-      </aside>
+      <div
+        className={`relative shrink-0 overflow-hidden transition-[width] duration-300 ease-out ${
+          isSideBarOpen ? "w-[220px]" : "w-12"
+        }`}
+      >
+        {!isSideBarOpen && (
+          <button
+            type="button"
+            aria-label="Open sidebar"
+            className="absolute right-2 top-10 z-20 p-1 rounded-md text-muted transition hover:bg-muted/20 hover:cursor-pointer"
+            onClick={toggleSidebar}
+          >
+            <PanelRightOpen className="h-6 w-6" />
+          </button>
+        )}
+
+        <aside
+          className={`h-full w-[220px] border-l pt-6 shadow-[inset_4px_0_12px_rgba(15,23,42,0.04)] transition-transform duration-300 ease-out ${
+            isSideBarOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <ViewSidebar
+            visibleCardFields={visibleCardFields}
+            toggleCardField={toggleCardField}
+            toggleSidebar={toggleSidebar}
+          />
+        </aside>
+      </div>
       {isProjectModalShellOpen && (
         <CreateProjectModal
           onClose={closeProjectModalShell}
