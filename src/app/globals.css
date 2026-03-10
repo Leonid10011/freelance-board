@@ -11,7 +11,7 @@
   --card: #fafbfc; /* cards */
   --meta: rgba(38, 38, 38, 0.8);
   --text: #262626;
-  --muted: oklch(0.967 0.003 264.542); /* gray-500 */
+  --muted: rgba(38, 38, 38, 0.7); /* gray-500 */
   --border: oklch(0.928 0.006 264.531); /* gray-200 */
 
   --accent: #10b981;

@@ -17,7 +17,7 @@ export default function FilterItem({
 
   return (
     <div
-      className={`cursor-pointer ${isActive ? "border-accent border-b-2 pb-1 hover:opacity-80" : "text-gray-500 hover:opacity-80"}`}
+      className={`cursor-pointer ${isActive ? "border-accent border-b-2 pb-1 hover:opacity-80 font-medium text-text" : "text-muted hover:opacity-80"}`}
       onClick={handleClick}
     >
       {label}
