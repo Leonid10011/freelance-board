@@ -1,4 +1,4 @@
-import { User } from "lucide-react"
+import { CalendarClock, Euro, Flag, Info, User } from "lucide-react"
 import FieldLabel from "./FieldLabel"
 import { Input } from "../ui/input"
 import DatePicker from "./DatePicker"
@@ -34,7 +34,7 @@ export default function ProjectFormFields({
     <>
       <input
         placeholder="New Project"
-        className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 py-2 mb-8"
+        className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 mb-8"
         onChange={(e) => onTextFieldChange("title", e.target.value)}
         value={formState.title}
       />
@@ -50,7 +50,7 @@ export default function ProjectFormFields({
           />
         </div>
         <div className="flex flex-row gap-4">
-          <FieldLabel icon={<User className="w-4 h-4" />} label="Budget" />
+          <FieldLabel icon={<Euro className="w-4 h-4" />} label="Budget" />
           <Input
             placeholder="Empty"
             className="w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -60,11 +60,14 @@ export default function ProjectFormFields({
           />
         </div>
         <div className="flex flex-row gap-4">
-          <FieldLabel icon={<User className="w-4 h-4" />} label="Deadline" />
+          <FieldLabel
+            icon={<CalendarClock className="w-4 h-4" />}
+            label="Deadline"
+          />
           <DatePicker date={datePickerDate} setDate={onDeadlineChange} />
         </div>
         <div className="flex flex-row gap-4">
-          <FieldLabel icon={<User className="w-4 h-4" />} label="Status" />
+          <FieldLabel icon={<Info className="w-4 h-4" />} label="Status" />
           <SelectField
             label="Status"
             values={PROJECT_STATUSES}
@@ -73,7 +76,7 @@ export default function ProjectFormFields({
           />
         </div>
         <div className="flex flex-row gap-4">
-          <FieldLabel icon={<User className="w-4 h-4" />} label="Priority" />
+          <FieldLabel icon={<Flag className="w-4 h-4" />} label="Priority" />
           <SelectField
             label="Priority"
             values={PROJECT_PRIORITIES}

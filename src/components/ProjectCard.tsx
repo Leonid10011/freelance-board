@@ -5,6 +5,8 @@ import { Project } from "@/domain/project"
 import { ProjectStatus } from "@/domain/project"
 import { VisibleCardFields } from "./board/types"
 import { format } from "date-fns"
+import { CalendarClock, Euro, Flag, User } from "lucide-react"
+import FieldItem from "./projectCard/FieldItem"
 
 type ProjectCardProps = {
   project: Project
@@ -45,11 +47,16 @@ export default function ProjectCard({
     }
   }, [isStatusDropdownOpen])
 
-  const handleStatusClick = () => {
+  const handleStatusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     setIsStatusDropdownOpen((currentState) => !currentState)
   }
 
-  const handleStatusSelect = (status: ProjectStatus) => {
+  const handleStatusSelect = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    status: ProjectStatus,
+  ) => {
+    event.stopPropagation()
     onStatusChange(project.id, status)
     setIsStatusDropdownOpen(false)
   }
@@ -60,15 +67,19 @@ export default function ProjectCard({
 
   return (
     <div
-      className="flex flex-col bg-white rounded-2xl gap-6 py-4 px-6 hover:shadow-lg hover:bg-gray-100 hover:opacity-90 hover:cursor-pointer"
+      className="flex flex-col bg-card rounded-2xl gap-6 py-4 px-6 hover:shadow-lg hover:bg-gray-100 hover:opacity-90 hover:cursor-pointer"
       onClick={() => onEdit(project)}
     >
       {/*Project Header*/}
       <div className="flex flex-row justify-between items-center">
-        <h3 className="text-xl font-semibold">{project.title}</h3>
+        <h3 className="text-xl font-semibold text-text">{project.title}</h3>
         {/* Status Badge */}
 
-        <div ref={statusDropdownRef} className="relative">
+        <div
+          ref={statusDropdownRef}
+          className="relative"
+          onClick={(event) => event.stopPropagation()}
+        >
           <button
             type="button"
             className="text-xs font-medium px-2 py-1 rounded-full border-2 hover:border-gray-400 hover:cursor-pointer hover:bg-green-500"
@@ -84,7 +95,7 @@ export default function ProjectCard({
                   key={status}
                   type="button"
                   className="block w-full px-3 py-2 text-left text-sm hover:bg-gray-100 first:rounded-t-xl last:rounded-b-xl"
-                  onClick={() => handleStatusSelect(status)}
+                  onClick={(event) => handleStatusSelect(event, status)}
                 >
                   {formatStatus(status)}
                 </button>
@@ -96,19 +107,39 @@ export default function ProjectCard({
       {/*Project Details - only show fields that are enabled in visibleCardFields*/}
       <div className="flex flex-col gap-4 p-0">
         {visibleCardFields.client && (
-          <div>Client: {project.client ?? "N/A"}</div>
+          <FieldItem
+            icon={<User className="text-meta" />}
+            text={project.client}
+          />
         )}
         {visibleCardFields.budget && (
-          <div>Budget: {project.budget ?? "N/A"}</div>
+          <FieldItem
+            icon={<Euro className="text-meta" />}
+            text={
+              project.budget && Number(project.budget) !== undefined
+                ? `${Number(project.budget).toFixed(2)} €`
+                : undefined
+            }
+          />
         )}
         {visibleCardFields.deadline && (
-          <div>
-            Deadline:{" "}
-            {project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"}
-          </div>
+          <FieldItem
+            icon={<CalendarClock className="text-meta" />}
+            text={
+              project.deadline ? format(project.deadline, "yyyy-MM-dd") : "N/A"
+            }
+          />
         )}
         {visibleCardFields.priority && (
-          <div>Priority: {project.priority ?? "N/A"}</div>
+          <FieldItem
+            icon={<Flag className="text-meta" />}
+            text={
+              project.priority
+                ? project.priority.slice(-1).toLocaleUpperCase() +
+                  project.priority.slice(1)
+                : "N/A"
+            }
+          />
         )}
       </div>
     </div>

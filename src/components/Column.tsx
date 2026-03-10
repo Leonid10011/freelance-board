@@ -36,10 +36,10 @@ export default function Column({
   return (
     <div className="w-80 shrink-0 p-4 gap-8 bg-gray-100 rounded-2xl">
       {/* Column Header */}
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-center mb-4">
         {/* statusname + project count */}
-        <div className="flex flex-row justify-items-center items-center gap-4 mb-4">
-          <h2 className="text-md font-bold text-gray-700">
+        <div className="flex flex-row justify-items-center items-center gap-4">
+          <h2 className="text-md font-bold text-text">
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </h2>
           {projectCount > 0 && (
@@ -48,7 +48,7 @@ export default function Column({
         </div>
         {/* Add Button */}
         <button onClick={handleAddProject}>
-          <CirclePlus className="w-6 h-6 text-green-500 cursor-pointer" />
+          <CirclePlus className="w-6 h-6 text-accent cursor-pointer hover:opacity-70" />
         </button>
       </div>
       {/* Projects */}

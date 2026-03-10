@@ -8,6 +8,7 @@ import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import CreateProjectModal from "./projectModal/CreateProjectModal"
 import UpdateProjectModal from "./projectModal/UpdateProjectModal"
+import { PanelLeftOpen, PanelRightOpen } from "lucide-react"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -29,6 +30,9 @@ export default function Board({ initialProjects }: BoardProps) {
   const [initialStatus, setInitialStatus] = useState<ProjectStatus>("inquiry")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [projectToEdit, setProjectToEdit] = useState<Project>()
+  const [isSideBarOpen, setIsSidebarOpen] = useState(true)
+
+  const toggleSidebar = () => setIsSidebarOpen((current) => !current)
 
   const closeProjectModalShell = () => setIsProjectModalShellOpen(false)
   const closeEditProjectModal = () => setIsEditProjectModalOpen(false)
@@ -101,20 +105,18 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <header className="border-b px-6 py-4 height-16">
-        <div className="flex flex-col items-start justify-between">
-          <h1 className="text-2xl font-bold">Freelance Board</h1>
-          <StatusFilterBar
-            statuses={STATUS_ORDER}
-            visibleStatuses={visibleStatuses}
-            toggleStatus={toggleStatus}
-          />
-        </div>
-      </header>
-
-      <div className="flex h-[calc(100vh-4rem)] w-full overflow-x-auto justify-between">
-        <main className="flex flex-row overflow-x-auto overflow-y-hidden p-6 gap-4">
+    <div className="flex min-h-[32rem] h-full min-h-0 w-full flex-row overflow-hidden bg-board rounded-xl">
+      <div className="flex flex-col min-h-0 flex-1 w-full overflow-hidden justify-between">
+        <header className=" px-6 py-4">
+          <div className="flex flex-col items-start justify-between">
+            <StatusFilterBar
+              statuses={STATUS_ORDER}
+              visibleStatuses={visibleStatuses}
+              toggleStatus={toggleStatus}
+            />
+          </div>
+        </header>
+        <main className="flex min-h-0 flex-row gap-4 overflow-x-auto overflow-y-hidden p-6">
           {visibleStatuses.map((status) => (
             <Column
               onEditProject={handleEditProject}
@@ -130,10 +132,32 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           ))}
         </main>
-        <aside className="w-80 shrink-0 border-l p-6">
+      </div>
+      <div
+        className={`relative shrink-0 overflow-hidden transition-[width] duration-300 ease-out ${
+          isSideBarOpen ? "w-[220px]" : "w-12"
+        }`}
+      >
+        {!isSideBarOpen && (
+          <button
+            type="button"
+            aria-label="Open sidebar"
+            className="absolute right-2 top-10 z-20 p-1 rounded-md text-muted transition hover:bg-muted/20 hover:cursor-pointer"
+            onClick={toggleSidebar}
+          >
+            <PanelRightOpen className="h-6 w-6" />
+          </button>
+        )}
+
+        <aside
+          className={`h-full w-[220px] border-l pt-6 shadow-[inset_4px_0_12px_rgba(15,23,42,0.04)] transition-transform duration-300 ease-out ${
+            isSideBarOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
           <ViewSidebar
             visibleCardFields={visibleCardFields}
             toggleCardField={toggleCardField}
+            toggleSidebar={toggleSidebar}
           />
         </aside>
       </div>

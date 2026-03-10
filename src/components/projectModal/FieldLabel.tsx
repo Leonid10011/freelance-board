@@ -7,15 +7,13 @@ type FieldLabelProps = {
 
 export default function FieldLabel({ icon, label }: FieldLabelProps) {
   return (
-    <>
-      <div className="flex flex-row justify-between gap-4 items-end">
-        <div className="flex flex-row gap-1 hover:cursor-pointer hover:bg-gray-300 border-none rounded-md p-2">
-          {icon}
-          <Label className="text-md font-medium text-gray-700 w-32 hover:cursor-pointer hover:bg-gray-300 rounded-md">
-            {label}
-          </Label>
-        </div>
+    <div className="flex flex-row items-center justify-center gap-4">
+      <div className="flex flex-row items-center gap-4 rounded-md border-none p-2 hover:cursor-pointer hover:bg-muted/20">
+        <span className="flex items-center">{icon}</span>
+        <Label className="w-32 rounded-md text-md font-medium text-text hover:cursor-pointer">
+          {label}
+        </Label>
       </div>
-    </>
+    </div>
   )
 }
