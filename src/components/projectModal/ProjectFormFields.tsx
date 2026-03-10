@@ -34,7 +34,7 @@ export default function ProjectFormFields({
     <>
       <input
         placeholder="New Project"
-        className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 py-2 mb-8"
+        className="w-full text-4xl font-bold placeholder-gray-300 border-none outline-none bg transparent focus:ring-0 mb-8"
         onChange={(e) => onTextFieldChange("title", e.target.value)}
         value={formState.title}
       />
