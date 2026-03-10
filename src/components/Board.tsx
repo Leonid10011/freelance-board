@@ -105,8 +105,8 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex w-full min-h-[32rem] flex-row rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none ">
-      <div className="flex w-full flex-1 flex-col">
+    <div className="flex w-full min-h-[32rem] flex-row overflow-x-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none">
+      <div className="flex min-w-0 flex-1 flex-col">
         <header className="px-6 py-4 max-md:px-3 max-md:py-3">
           <div className="flex flex-col items-start justify-between">
             <StatusFilterBar
