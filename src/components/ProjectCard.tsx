@@ -45,11 +45,16 @@ export default function ProjectCard({
     }
   }, [isStatusDropdownOpen])
 
-  const handleStatusClick = () => {
+  const handleStatusClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
     setIsStatusDropdownOpen((currentState) => !currentState)
   }
 
-  const handleStatusSelect = (status: ProjectStatus) => {
+  const handleStatusSelect = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    status: ProjectStatus,
+  ) => {
+    event.stopPropagation()
     onStatusChange(project.id, status)
     setIsStatusDropdownOpen(false)
   }
@@ -68,7 +73,11 @@ export default function ProjectCard({
         <h3 className="text-xl font-semibold">{project.title}</h3>
         {/* Status Badge */}
 
-        <div ref={statusDropdownRef} className="relative">
+        <div
+          ref={statusDropdownRef}
+          className="relative"
+          onClick={(event) => event.stopPropagation()}
+        >
           <button
             type="button"
             className="text-xs font-medium px-2 py-1 rounded-full border-2 hover:border-gray-400 hover:cursor-pointer hover:bg-green-500"
@@ -84,7 +93,7 @@ export default function ProjectCard({
                   key={status}
                   type="button"
                   className="block w-full px-3 py-2 text-left text-sm hover:bg-gray-100 first:rounded-t-xl last:rounded-b-xl"
-                  onClick={() => handleStatusSelect(status)}
+                  onClick={(event) => handleStatusSelect(event, status)}
                 >
                   {formatStatus(status)}
                 </button>
