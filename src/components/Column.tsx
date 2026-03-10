@@ -39,7 +39,7 @@ export default function Column({
       <div className="flex flex-row justify-between">
         {/* statusname + project count */}
         <div className="flex flex-row justify-items-center items-center gap-4 mb-4">
-          <h2 className="text-md font-bold text-gray-700">
+          <h2 className="text-md font-bold text-text">
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </h2>
           {projectCount > 0 && (
