@@ -5,7 +5,9 @@ import { format } from "date-fns"
 import ProjectModalShell from "./ProjectModalShell"
 import ProjectFormFields from "./ProjectFormFields"
 import { UpdateProjectSchema } from "@/validation/project.schema"
-import { ProjectRepoError, updateProject } from "@/repo/project.repo"
+import { ProjectRepoError } from "@/repo/project.repo"
+import { useAppMode } from "@/lib/app-mode"
+import { createProjectGateway } from "@/repo/project.gateway"
 
 type UpdateProjectModalProps = {
   project: Project
@@ -18,6 +20,9 @@ export default function UpdateProjectModal({
   onUpdate,
   onClose,
 }: UpdateProjectModalProps) {
+  const mode = useAppMode()
+  const porjectGateway = createProjectGateway(mode)
+
   const initialFormState: FormStateType = {
     title: project.title ?? "",
     client: project.client ?? "",
@@ -54,7 +59,7 @@ export default function UpdateProjectModal({
         setSubmitting(false)
         return
       }
-      const result = await updateProject(project.id, validatedData.data)
+      const result = await porjectGateway.update(project.id, validatedData.data)
       // setSaveSuccess("Project updated successfully!") /* Temporarily disable success message to focus on error handling */
       onUpdate(result)
       onClose(false)

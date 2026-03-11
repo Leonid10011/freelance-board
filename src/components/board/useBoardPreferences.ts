@@ -112,13 +112,23 @@ export function useBoardPreferences() {
   }
 
   function toggleStatus(status: ProjectStatus) {
-    setPrefs((p) => ({
-      ...p,
-      visibleStatuses: {
-        ...p.visibleStatuses,
-        [status]: !p.visibleStatuses[status],
-      },
-    }))
+    setPrefs((p) => {
+      const isClickedCurrentlyTrue = p.visibleStatuses[status]
+      const trueCount = Object.values(p.visibleStatuses).filter(Boolean).length
+
+      // Verhindere Deaktivierung, wenn es der letzte sichtbare Status ist
+      if (isClickedCurrentlyTrue && trueCount <= 1) {
+        return p // Keine Änderung vornehmen
+      }
+
+      return {
+        ...p,
+        visibleStatuses: {
+          ...p.visibleStatuses,
+          [status]: !p.visibleStatuses[status],
+        },
+      }
+    })
   }
 
   function toggleCardField(field: keyof BoardPreferences["visibleCardFields"]) {

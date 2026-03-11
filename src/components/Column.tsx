@@ -34,7 +34,7 @@ export default function Column({
   }
 
   return (
-    <div className="w-80 shrink-0 p-4 gap-8 bg-gray-100 rounded-2xl">
+    <div className="w-80 shrink-0 p-4 gap-8 bg-gray-100 rounded-2xl max-md:w-full ">
       {/* Column Header */}
       <div className="flex flex-row justify-between items-center mb-4">
         {/* statusname + project count */}
@@ -52,7 +52,7 @@ export default function Column({
         </button>
       </div>
       {/* Projects */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col max-md:flex-row gap-4 max-md:overflow-x-auto">
         {projects.length > 0 ? (
           projects.map((project) => {
             return (

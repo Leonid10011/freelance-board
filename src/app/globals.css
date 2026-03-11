@@ -11,7 +11,7 @@
   --card: #fafbfc; /* cards */
   --meta: rgba(38, 38, 38, 0.8);
   --text: #262626;
-  --muted: rgba(38, 38, 38, 0.7); /* gray-500 */
+  --muted: rgba(38, 38, 38, 0.8); /* gray-500 */
   --border: oklch(0.928 0.006 264.531); /* gray-200 */
 
   --accent: #10b981;
@@ -104,6 +104,17 @@
   .focus-ring:focus-visible {
     outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hidden {
+    -ms-overflow-style: none; /* IE/Edge legacy */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 }
 
