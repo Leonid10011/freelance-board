@@ -72,18 +72,10 @@ export default function Board({ initialProjects }: BoardProps) {
   }
 
   const visibleStatuses = useMemo(() => {
-    console.log(
-      "[visibleStatuses] Calculating visibleStatuses with prefs:",
-      prefs.visibleStatuses,
-    )
     return STATUS_ORDER.filter((status) => prefs.visibleStatuses[status])
   }, [prefs.visibleStatuses])
 
   const visibleCardFields = useMemo(() => {
-    console.log(
-      "[visibleCardFields] Calculating visibleCardFields with prefs:",
-      prefs.visibleCardFields,
-    )
     return prefs.visibleCardFields
   }, [prefs.visibleCardFields])
 
