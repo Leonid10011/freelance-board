@@ -7,8 +7,13 @@ export default async function Home() {
   const initialProjects: Project[] = await getProjects()
 
   return (
-    <>
-      <Board initialProjects={initialProjects} />
-    </>
+    <div className="min-h-screen">
+      <div className="mx-auto w-full max-w-[1600px] px-4 py-6 md:px-4 md:py-8">
+        <h1 className="text-2xl font-bold">DEMO Freelance Board</h1>
+        <div className="mt-4">
+          <Board initialProjects={initialProjects} />
+        </div>
+      </div>
+    </div>
   )
 }
