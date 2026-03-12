@@ -21,10 +21,10 @@ export default function RecruiterCta() {
         </Link>
         <Link
           type="button"
-          href="/board"
+          href="/login-magic-link"
           className="rounded-md border px-4 py-2"
         >
-          Magic Link anfordern (TODO)
+          Login mit Magic Link
         </Link>
       </div>
     </section>
