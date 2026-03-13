@@ -3,7 +3,8 @@
  * Repository functions for accessing and manipulating project data in the database.
  */
 import { projectRowToDomain } from "@/db/project.mapper"
-import { toProjectUpdatePatch } from "@/db/project.repo"
+import { toProjectUpdatePatch } from "@/db/project.patch"
+
 import { createSupabaseBrowserClient } from "@/db/supabase.client"
 import { Project, ProjectPriority, ProjectStatus } from "@/domain/project"
 import {
