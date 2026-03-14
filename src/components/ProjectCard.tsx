@@ -135,7 +135,7 @@ export default function ProjectCard({
             icon={<Flag className="text-meta" />}
             text={
               project.priority
-                ? project.priority.slice(-1).toLocaleUpperCase() +
+                ? project.priority.slice(0, 1).toLocaleUpperCase() +
                   project.priority.slice(1)
                 : "N/A"
             }

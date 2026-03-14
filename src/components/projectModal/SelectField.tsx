@@ -29,7 +29,7 @@ export function SelectField<T extends string>({
           <SelectLabel>{label}</SelectLabel>
           {values.map((item) => (
             <SelectItem key={item} value={item}>
-              {item}
+              {item.slice(0, 1).toLocaleUpperCase() + item.slice(1)}
             </SelectItem>
           ))}
         </SelectGroup>
