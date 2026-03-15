@@ -9,6 +9,7 @@ import Column from "./Column"
 import CreateProjectModal from "./projectModal/CreateProjectModal"
 import UpdateProjectModal from "./projectModal/UpdateProjectModal"
 import { PanelRightOpen } from "lucide-react"
+import { useProjectActions } from "@/hooks/useProjectActions"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -20,10 +21,11 @@ const STATUS_ORDER: ProjectStatus[] = [
 ]
 
 type BoardProps = {
+  mode: "demo" | "live"
   initialProjects: Project[]
 }
 
-export default function Board({ initialProjects }: BoardProps) {
+export default function Board({ mode, initialProjects }: BoardProps) {
   const { prefs, toggleStatus, toggleCardField } = useBoardPreferences()
   const [isProjectModalShellOpen, setIsProjectModalShellOpen] = useState(false)
   const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false)
