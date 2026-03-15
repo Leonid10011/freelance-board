@@ -14,10 +14,10 @@ const PREFS_EVENT = "freelance-board:prefs:change"
 
 const DEFAULT_PREFS: BoardPreferences = {
   visibleStatuses: {
-    inquiry: false,
-    proposal: false,
+    inquiry: true,
+    proposal: true,
     negotiation: false,
-    active: false,
+    active: true,
     waiting: false,
     completed: false,
   },
