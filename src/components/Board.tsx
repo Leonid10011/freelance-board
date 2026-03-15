@@ -66,6 +66,12 @@ export default function Board({ mode, initialProjects }: BoardProps) {
     setProjects((currentProjects) => [...currentProjects, newProject])
   }
 
+  const handleDeleteProject = (projectId: string) => {
+    setProjects((currentProjects) =>
+      currentProjects.filter((project) => project.id !== projectId),
+    )
+  }
+
   const handleEditProject = (editedProject: Project) => {
     setIsEditProjectModalOpen(true)
     setProjectToEdit(editedProject)
@@ -173,6 +179,7 @@ export default function Board({ mode, initialProjects }: BoardProps) {
           // For example, you could have a state variable like `projectToEdit` and pass it here
           project={projectToEdit}
           onUpdate={handleEditProject}
+          onDelete={handleDeleteProject}
         />
       )}
     </div>
