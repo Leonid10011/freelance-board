@@ -19,12 +19,6 @@ export function useProjectForm({
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
-  const [saveError, setSaveError] = useState<string | null>(null)
-
-  const setError = (error: string | null) => {
-    setSaveError(error)
-  }
-
   const setSubmitting = (value: boolean) => {
     setIsSubmitting(value)
   }
@@ -60,12 +54,10 @@ export function useProjectForm({
   return {
     formState,
     isSubmitting,
-    saveError,
     handleDateChange,
     handleProjectStatusChange,
     handleProjectPriorityChange,
     handleInputChange,
-    setError,
     setSubmitting,
   }
 }

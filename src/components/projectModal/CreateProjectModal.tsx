@@ -6,6 +6,7 @@ import ProjectModalShell from "./ProjectModalShell"
 import { useProjectForm } from "./useProjectForm"
 import { useAppMode } from "@/lib/app-mode"
 import { createProjectGateway } from "@/repo/project.gateway"
+import { useErrorContext } from "@/context/ErrorContext"
 
 type CreateProjectModalProps = {
   initialStatus: ProjectStatus
@@ -24,13 +25,11 @@ export default function CreateProjectModal({
   const {
     formState,
     isSubmitting,
-    saveError,
     handleDateChange,
     handleProjectStatusChange,
     handleProjectPriorityChange,
     handleInputChange,
     setSubmitting,
-    setError,
   } = useProjectForm({
     initialState: {
       client: "",
@@ -42,13 +41,15 @@ export default function CreateProjectModal({
     },
   })
 
+  const { error, handleError } = useErrorContext()
+
   const handleSave = async () => {
     if (isSubmitting) {
       return
     }
 
     try {
-      setError(null)
+      handleError(null)
       // setSaveSuccess(null)  /* Temporarily disable success message to focus on error handling */
       setSubmitting(true)
       const validatedData = CreateProjectSchema.safeParse(formState)
@@ -63,14 +64,14 @@ export default function CreateProjectModal({
     } catch (error: unknown) {
       if (error instanceof ProjectRepoError) {
         if (error.code === "AUTH_REQUIRED") {
-          setError("You must be logged in to create a project.")
+          handleError("You must be logged in to create a project.")
         } else if (error.code === "VALIDATION") {
-          setError("Invalid data. Please check your input and try again.")
+          handleError("Invalid data. Please check your input and try again.")
         } else {
-          setError("Failed to create project. Please try again.")
+          handleError("Failed to create project. Please try again.")
         }
       } else {
-        setError("An unexpected error occurred. Please try again.")
+        handleError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setSubmitting(false)
@@ -93,7 +94,7 @@ export default function CreateProjectModal({
       onPrimaryAction={handleSave}
       isSubmitting={isSubmitting}
       primaryActionLabel="Create Project"
-      errorMessage={saveError}
+      errorMessage={error}
     >
       {formFieldComponent}
     </ProjectModalShell>
