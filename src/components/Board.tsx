@@ -34,6 +34,8 @@ export default function Board({ mode, initialProjects }: BoardProps) {
   const [projectToEdit, setProjectToEdit] = useState<Project>()
   const [isSideBarOpen, setIsSidebarOpen] = useState(true)
 
+  const { handleStatusChange } = useProjectActions({ mode })
+
   const toggleSidebar = () => setIsSidebarOpen((current) => !current)
 
   const closeProjectModalShell = () => setIsProjectModalShellOpen(false)
@@ -43,6 +45,8 @@ export default function Board({ mode, initialProjects }: BoardProps) {
     projectId: string,
     newStatus: ProjectStatus,
   ) => {
+    handleStatusChange(projectId, newStatus)
+
     setProjects((currentProjects) =>
       currentProjects.map((project) => {
         if (project.id !== projectId) {
