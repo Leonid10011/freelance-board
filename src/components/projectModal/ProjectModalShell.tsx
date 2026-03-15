@@ -4,6 +4,7 @@ import { useEffect } from "react"
 type ProjectModalShellProps = {
   onClose: (isOpen: boolean) => void
   onPrimaryAction: () => void
+  onDelete?: () => void
   isSubmitting: boolean
   primaryActionLabel: string
   children?: React.ReactNode
@@ -13,6 +14,7 @@ type ProjectModalShellProps = {
 export default function ProjectModalShell({
   onClose,
   onPrimaryAction,
+  onDelete,
   isSubmitting,
   primaryActionLabel,
   children,
@@ -53,6 +55,15 @@ export default function ProjectModalShell({
         <div className="flex flex-col gap-4">{children}</div>
         {/* Footer */}
         <div className="flex flex-row justify-end gap-8 mt-8">
+          {onDelete && (
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 hover:cursor-pointer"
+              onClick={onDelete}
+              disabled={isSubmitting}
+            >
+              Delete
+            </button>
+          )}
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           <button
             className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 hover:cursor-pointer"

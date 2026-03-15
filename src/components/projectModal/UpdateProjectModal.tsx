@@ -14,12 +14,14 @@ type UpdateProjectModalProps = {
   project: Project
   onUpdate: (updatedProject: Project) => void
   onClose: (isOpen: boolean) => void
+  onDelete: (projectId: string) => void
 }
 
 export default function UpdateProjectModal({
   project,
   onUpdate,
   onClose,
+  onDelete,
 }: UpdateProjectModalProps) {
   const mode = useAppMode()
   const porjectGateway = createProjectGateway(mode)
@@ -81,6 +83,34 @@ export default function UpdateProjectModal({
     }
   }
 
+  const handleDelete = async () => {
+    if (isSubmitting) {
+      return
+    }
+    try {
+      handleError(null)
+      setSubmitting(true)
+      await porjectGateway.delete(project.id)
+      console.log("Project deleted successfully")
+      onDelete(project.id)
+      console.log("onDelete callback executed")
+      onClose(false)
+    } catch (error: unknown) {
+      if (error instanceof ProjectRepoError) {
+        if (error.code === "AUTH_REQUIRED") {
+          handleError("You must be logged in to delete a project.")
+        } else {
+          handleError("Failed to delete project. Please try again.")
+        }
+      } else {
+        console.error("Unexpected error during deletion:", error)
+        handleError("An unexpected error occurred. Please try again.")
+      }
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <ProjectModalShell
       isSubmitting={isSubmitting}
@@ -88,6 +118,7 @@ export default function UpdateProjectModal({
       primaryActionLabel="Update"
       onClose={() => onClose(false)}
       errorMessage={error}
+      onDelete={handleDelete}
     >
       <ProjectFormFields
         formState={formState}
