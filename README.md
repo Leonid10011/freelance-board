@@ -27,8 +27,8 @@ Minimal Kanban board with multiple columns and task cards.
 ### Create and Edit Projects
 
 <p align="center">
-  <img src="./public/screenshots/project-create.jpg" alt="Create Project" width="420"/>
-  <img src="./public/screenshots/project-edit.jpg" alt="Edit Project" width="420"/>
+  <img src="./public/screenshots/project-create.jpg" alt="Create Project" width="350"/>
+  <img src="./public/screenshots/project-edit.jpg" alt="Edit Project" width="350"/>
 </p>
 
 Create new projects and edit existing ones via a modal form.
@@ -38,8 +38,8 @@ Create new projects and edit existing ones via a modal form.
 ### Workflow Interaction
 
 <p align="center">
-  <img src="./public/screenshots/project-status-change.jpg" alt="Status Change" width="420"/>
-  <img src="./public/screenshots/view-card-fields.jpg" alt="Toggle Fields" width="420"/>
+  <img src="./public/screenshots/project-status-change.jpg" alt="Status Change" width="350"/>
+  <img src="./public/screenshots/view-card-fields.jpg" alt="Toggle Fields" width="350"/>
 </p>
 
 Quickly change project status or toggle visible card fields.
