@@ -97,7 +97,7 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex w-full min-h-[32rem] flex-row overflow-x-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none">
+    <div className="flex w-full min-h-[32rem] min-h-full flex-row overflow-x-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none">
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="px-6 py-4 max-md:px-3 max-md:py-3">
           <div className="flex flex-col items-start justify-between">
@@ -108,7 +108,7 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           </div>
         </header>
-        <main className="flex flex-row gap-4 overflow-x-auto p-6 max-md:flex-col max-md:gap-3 max-md:p-3 ">
+        <main className="flex flex-row h-full  gap-4 overflow-x-auto p-6 max-md:flex-col max-md:gap-3 max-md:p-3 ">
           {visibleStatuses.map((status) => (
             <Column
               onEditProject={handleEditProject}
