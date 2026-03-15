@@ -8,6 +8,7 @@ import { UpdateProjectSchema } from "@/validation/project.schema"
 import { ProjectRepoError } from "@/repo/project.repo"
 import { useAppMode } from "@/lib/app-mode"
 import { createProjectGateway } from "@/repo/project.gateway"
+import { useErrorContext } from "@/context/ErrorContext"
 
 type UpdateProjectModalProps = {
   project: Project
@@ -35,14 +36,14 @@ export default function UpdateProjectModal({
   const {
     formState,
     isSubmitting,
-    saveError,
     handleDateChange,
     handleProjectStatusChange,
     handleProjectPriorityChange,
     handleInputChange,
     setSubmitting,
-    setError,
   } = useProjectForm({ initialState: initialFormState })
+
+  const { error, handleError } = useErrorContext()
 
   const handleUpdate = async () => {
     if (isSubmitting) {
@@ -50,12 +51,12 @@ export default function UpdateProjectModal({
     }
 
     try {
-      setError(null)
+      handleError(null)
       setSubmitting(true)
       const validatedData = UpdateProjectSchema.safeParse(formState)
       if (!validatedData.success) {
         console.error("Validation failed:", validatedData.error)
-        setError("Invalid data. Please check your input and try again.")
+        handleError("Invalid data. Please check your input and try again.")
         setSubmitting(false)
         return
       }
@@ -66,14 +67,14 @@ export default function UpdateProjectModal({
     } catch (error: unknown) {
       if (error instanceof ProjectRepoError) {
         if (error.code === "AUTH_REQUIRED") {
-          setError("You must be logged in to update a project.")
+          handleError("You must be logged in to update a project.")
         } else if (error.code === "VALIDATION") {
-          setError("Invalid data. Please check your input and try again.")
+          handleError("Invalid data. Please check your input and try again.")
         } else {
-          setError("Failed to update project. Please try again.")
+          handleError("Failed to update project. Please try again.")
         }
       } else {
-        setError("An unexpected error occurred. Please try again.")
+        handleError("An unexpected error occurred. Please try again.")
       }
     } finally {
       setSubmitting(false)
@@ -86,7 +87,7 @@ export default function UpdateProjectModal({
       onPrimaryAction={handleUpdate}
       primaryActionLabel="Update"
       onClose={() => onClose(false)}
-      errorMessage={saveError}
+      errorMessage={error}
     >
       <ProjectFormFields
         formState={formState}
