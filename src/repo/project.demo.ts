@@ -1,5 +1,5 @@
 import { Project } from "@/domain/project"
-import { CreateInput, UpdateData, UpdateId } from "./types"
+import { CreateInput, DeleteId, UpdateData, UpdateId } from "./types"
 
 export function getProjectsFromLocalStorage(): Project[] {
   if (typeof window === "undefined") {
@@ -35,7 +35,7 @@ export async function updateProjectInLocalStorage(
   id: UpdateId,
   data: UpdateData,
 ) {
-  const raw = localStorage.getItem("project-demo")
+  const raw = localStorage.getItem("demo-projects")
   const list: Project[] = raw ? JSON.parse(raw) : []
   const updatedList = list.map((p) =>
     p.id === id
@@ -58,7 +58,7 @@ export async function updateProjectInLocalStorage(
       : p,
   )
 
-  localStorage.setItem("project-demo", JSON.stringify(updatedList))
+  localStorage.setItem("demo-projects", JSON.stringify(updatedList))
   const updatedItem = updatedList.find((p) => p.id === id)
 
   if (!updatedItem) {
@@ -67,4 +67,15 @@ export async function updateProjectInLocalStorage(
   }
 
   return updatedItem
+}
+
+export const deleteProjectFromLocalStorage = async (id: DeleteId) => {
+  const raw = localStorage.getItem("demo-projects")
+  const list: Project[] = raw ? JSON.parse(raw) : []
+  if (!list.find((p) => p.id === id)) {
+    // todo implement error handling
+    throw new Error("Project now found")
+  }
+  const next = list.filter((p) => p.id !== id)
+  localStorage.setItem("project-demo", JSON.stringify(next))
 }
