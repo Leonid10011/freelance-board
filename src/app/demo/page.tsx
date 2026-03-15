@@ -12,10 +12,10 @@ export default function Home() {
   )
 
   return (
-    <div className="min-h-screen">
-      <div className="mx-auto w-full max-w-[1600px] px-4 py-6 md:px-4 md:py-8">
+    <div className="min-h-screen h-full">
+      <div className="mx-auto w-full h-full max-w-[1600px] px-4 py-6 md:px-4 md:py-8">
         <h1 className="text-2xl font-bold">DEMO Freelance Board</h1>
-        <div className="mt-4">
+        <div className=" h-full mt-4">
           <Board initialProjects={initialProjects} />
         </div>
       </div>

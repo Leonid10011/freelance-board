@@ -8,9 +8,9 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto w-full max-w-[1600px] px-4 py-6 md:px-4 md:py-8">
+      <div className="mx-auto w-full max-w-[1600px] h-full px-4 py-6 md:px-4 md:py-8">
         <h1 className="text-2xl font-bold">Freelance Board</h1>
-        <div className="mt-4">
+        <div className="mt-4 h-full">
           <Board initialProjects={initialProjects} />
         </div>
       </div>
