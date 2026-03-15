@@ -16,7 +16,7 @@ export default function Home() {
       <div className="mx-auto w-full h-full max-w-[1600px] px-4 py-6 md:px-4 md:py-8">
         <h1 className="text-2xl font-bold">DEMO Freelance Board</h1>
         <div className=" h-full mt-4">
-          <Board initialProjects={initialProjects} />
+          <Board mode="demo" initialProjects={initialProjects} />
         </div>
       </div>
     </div>
