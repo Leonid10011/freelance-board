@@ -4,7 +4,7 @@ A minimalism Kanban Board for managing freelancing projects with minimum interac
 
 ## 💿 Live Demo
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-online-brightgreen?style=for-the-badge)](https://freelance-board-ufup.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-online-brightgreen?style=for-the-badge)](https://leonid-dev.com/freelance-board/)
 
 ## 🚀 Features
 
