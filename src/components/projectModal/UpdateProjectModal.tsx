@@ -6,9 +6,9 @@ import ProjectModalShell from "./ProjectModalShell"
 import ProjectFormFields from "./ProjectFormFields"
 import { UpdateProjectSchema } from "@/validation/project.schema"
 import { ProjectRepoError } from "@/repo/project.repo"
-import { useAppMode } from "@/lib/app-mode"
 import { createProjectGateway } from "@/repo/project.gateway"
 import { useErrorContext } from "@/context/ErrorContext"
+import { useAppModeContext } from "@/context/AppModeContext"
 
 type UpdateProjectModalProps = {
   project: Project
@@ -23,7 +23,7 @@ export default function UpdateProjectModal({
   onClose,
   onDelete,
 }: UpdateProjectModalProps) {
-  const mode = useAppMode()
+  const { mode } = useAppModeContext()
   const porjectGateway = createProjectGateway(mode)
 
   const initialFormState: FormStateType = {

@@ -10,6 +10,7 @@ import CreateProjectModal from "./projectModal/CreateProjectModal"
 import UpdateProjectModal from "./projectModal/UpdateProjectModal"
 import { PanelRightOpen } from "lucide-react"
 import { useProjectActions } from "@/hooks/useProjectActions"
+import { useAppModeContext } from "@/context/AppModeContext"
 
 const STATUS_ORDER: ProjectStatus[] = [
   "inquiry",
@@ -21,11 +22,10 @@ const STATUS_ORDER: ProjectStatus[] = [
 ]
 
 type BoardProps = {
-  mode: "demo" | "live"
   initialProjects: Project[]
 }
 
-export default function Board({ mode, initialProjects }: BoardProps) {
+export default function Board({ initialProjects }: BoardProps) {
   const { prefs, toggleStatus, toggleCardField } = useBoardPreferences()
   const [isProjectModalShellOpen, setIsProjectModalShellOpen] = useState(false)
   const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false)
@@ -33,6 +33,8 @@ export default function Board({ mode, initialProjects }: BoardProps) {
   const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [projectToEdit, setProjectToEdit] = useState<Project>()
   const [isSideBarOpen, setIsSidebarOpen] = useState(true)
+
+  const { mode } = useAppModeContext()
 
   const { handleStatusChange } = useProjectActions({ mode })
 
