@@ -3,7 +3,7 @@
 import { Project, ProjectStatus } from "@/domain/project"
 import { useBoardPreferences } from "./board/useBoardPreferences"
 import StatusFilterBar from "./StatusFilterBar"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import ViewSidebar from "./ViewSidebar"
 import Column from "./Column"
 import CreateProjectModal from "./projectModal/CreateProjectModal"
@@ -115,6 +115,65 @@ export default function Board({ initialProjects }: BoardProps) {
     return map
   }, [projects])
 
+  const dragRef = useRef<HTMLDivElement | null>(null)
+  const startXRef = useRef(0)
+  const startScrollLeftRef = useRef(0)
+  const draggingRef = useRef(false)
+
+  useEffect(() => {
+    const container = dragRef.current
+    if (!container) return
+    console.log("test")
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!draggingRef.current) return
+      document.body.style.userSelect = "none"
+      const xDiff = e.clientX - startXRef.current
+      container.scrollLeft = startScrollLeftRef.current - xDiff
+    }
+
+    const handleMouseUp = (e: MouseEvent) => {
+      draggingRef.current = false
+
+      document.body.classList.remove("nodrag-cursor")
+      document.body.classList.remove("nonselect")
+
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("mouseup", handleMouseUp)
+      window.removeEventListener("mouseleave", handleMouseLeave)
+    }
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      draggingRef.current = false
+
+      document.body.classList.remove("nodrag-cursor")
+      document.body.classList.remove("nonselect")
+
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("mouseup", handleMouseUp)
+      window.removeEventListener("mouseleave", handleMouseLeave)
+    }
+
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button !== 0) return
+      draggingRef.current = true
+      startXRef.current = e.clientX
+      startScrollLeftRef.current = container.scrollLeft
+
+      document.body.classList.add("nonselect")
+      document.body.classList.add("nodrag-cursor")
+
+      window.addEventListener("mousemove", handleMouseMove)
+      window.addEventListener("mouseup", handleMouseUp)
+      window.addEventListener("mouseleave", handleMouseLeave)
+    }
+
+    container.addEventListener("mousedown", handleMouseDown)
+
+    return () => {
+      container.removeEventListener("mousedown", handleMouseDown)
+    }
+  }, [])
+
   return (
     <div className="flex w-full min-h-[32rem] min-h-full flex-row overflow-x-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:min-h-full max-md:rounded-none">
       <div className="flex min-w-0 flex-1 flex-col">
@@ -127,7 +186,10 @@ export default function Board({ initialProjects }: BoardProps) {
             />
           </div>
         </header>
-        <main className="flex flex-row h-full  gap-4 overflow-x-auto p-6 max-md:flex-col max-md:gap-3 max-md:p-3 ">
+        <main
+          ref={dragRef}
+          className="flex flex-row h-full  gap-4 overflow-x-auto p-6 max-md:flex-col max-md:gap-3 max-md:p-3 "
+        >
           {visibleStatuses.map((status) => (
             <Column
               onEditProject={handleEditProject}
