@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { ErrorProvider } from "@/context/ErrorContext"
+import { AppModeProvider } from "@/context/AppModeContext"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ErrorProvider>{children}</ErrorProvider>
+        <AppModeProvider>
+          <ErrorProvider>{children}</ErrorProvider>
+        </AppModeProvider>
       </body>
     </html>
   )

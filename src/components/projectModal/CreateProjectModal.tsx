@@ -4,9 +4,9 @@ import { CreateProjectSchema } from "@/validation/project.schema"
 import ProjectFormFields from "./ProjectFormFields"
 import ProjectModalShell from "./ProjectModalShell"
 import { useProjectForm } from "./useProjectForm"
-import { useAppMode } from "@/lib/app-mode"
 import { createProjectGateway } from "@/repo/project.gateway"
 import { useErrorContext } from "@/context/ErrorContext"
+import { useAppModeContext } from "@/context/AppModeContext"
 
 type CreateProjectModalProps = {
   initialStatus: ProjectStatus
@@ -19,7 +19,7 @@ export default function CreateProjectModal({
   onClose,
   onSave,
 }: CreateProjectModalProps) {
-  const mode = useAppMode()
+  const { mode } = useAppModeContext()
   const porjectGateway = createProjectGateway(mode)
 
   const {
