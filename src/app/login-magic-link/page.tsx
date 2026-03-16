@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { createSupabaseBrowserClient } from "@/db/supabase.client"
 
+const BASE_PATH = "/freelance-board"
+
 export default function LoginPage() {
   const supabase = createSupabaseBrowserClient()
   const [email, setEmail] = useState("")
@@ -17,7 +19,7 @@ export default function LoginPage() {
       email,
       options: {
         // Muss auf deine Domain zeigen (Vercel URL)
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${location.origin}${BASE_PATH}/auth/callback`,
       },
     })
 

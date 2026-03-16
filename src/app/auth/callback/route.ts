@@ -2,13 +2,15 @@ import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 
+const BASE_PATH = "/freelance-board"
+
 export async function GET(request: Request) {
   const url = new URL(request.url)
   const code = url.searchParams.get("code")
   const origin = url.origin
 
   if (!code) {
-    return NextResponse.redirect(`${origin}/login`)
+    return NextResponse.redirect(`${origin}${BASE_PATH}/login-magic-link`)
   }
 
   const cookieStore = await cookies()
@@ -32,8 +34,8 @@ export async function GET(request: Request) {
 
   const { error } = await supabase.auth.exchangeCodeForSession(code)
   if (error) {
-    return NextResponse.redirect(`${origin}/login-magic-link `)
+    return NextResponse.redirect(`${origin}${BASE_PATH}/login-magic-link`)
   }
 
-  return NextResponse.redirect(`${origin}/board`)
+  return NextResponse.redirect(`${origin}${BASE_PATH}/board`)
 }
