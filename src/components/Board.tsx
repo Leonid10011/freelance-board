@@ -27,14 +27,19 @@ type BoardProps = {
 
 export default function Board({ initialProjects }: BoardProps) {
   const { prefs, toggleStatus, toggleCardField } = useBoardPreferences()
+  const { mode } = useAppModeContext()
+
   const [isProjectModalShellOpen, setIsProjectModalShellOpen] = useState(false)
   const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false)
   const [initialStatus, setInitialStatus] = useState<ProjectStatus>("inquiry")
   const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [projectToEdit, setProjectToEdit] = useState<Project>()
-  const [isSideBarOpen, setIsSidebarOpen] = useState(true)
-
-  const { mode } = useAppModeContext()
+  const [isSideBarOpen, setIsSidebarOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth >= 768
+    }
+    return true
+  })
 
   const { handleStatusChange } = useProjectActions({ mode })
 
@@ -111,7 +116,7 @@ export default function Board({ initialProjects }: BoardProps) {
   }, [projects])
 
   return (
-    <div className="flex w-full min-h-[32rem] min-h-full flex-row overflow-x-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:rounded-none">
+    <div className="flex w-full min-h-[32rem] min-h-full flex-row overflow-x-hidden rounded-xl bg-board max-md:min-h-[24rem] max-md:min-h-full max-md:rounded-none">
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="px-6 py-4 max-md:px-3 max-md:py-3">
           <div className="flex flex-col items-start justify-between">
